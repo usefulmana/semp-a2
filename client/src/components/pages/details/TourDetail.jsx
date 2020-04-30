@@ -6,6 +6,9 @@ import { deleteTourById} from './../../actions/tourActions';
 import { Redirect } from 'react-router-dom';
 import Navbar from './../../parts/Navbar';
 import Footer from './../../parts/Footer';
+import { getLocations } from './../../actions/locationActions';
+import { getTypes } from './../../actions/typeActions';
+
 
 class TourDetail extends Component {
 
@@ -18,14 +21,34 @@ class TourDetail extends Component {
       locations: [],
       types: [],
       thumbnail: '',
-      createdAt: '',
-      createBy:'',
       minTime: '',
+      loc: "",
+      type: "",
       msg: ""
     })
     this.onChange = this.onChange.bind(this)
     // this.handleDeleteLocation = this.handleDeleteLocation.bind(this)
     // this.handleDeleteTour = this.handleDeleteTour.bind(this)
+  }
+
+
+  componentDidMount() {
+    var box = document.querySelectorAll('.materialboxed');
+    M.Materialbox.init(box);
+    var elems = document.querySelectorAll('.slider');
+    M.Slider.init(elems);
+    M.AutoInit()
+    this.setState({
+      id: this.props.location.state.item.id,
+      name: this.props.location.state.item.name,
+      description: this.props.location.state.item.description,
+      locations: this.props.location.state.item.locations,
+      types: this.props.location.state.item.types,
+      thumbnail: this.props.location.state.item.thumbnail,
+      minTime: this.props.location.state.item.minTime
+    })
+    this.props.getLocations()
+    this.props.getTypes()
   }
 
   onChange(e) {
@@ -35,25 +58,113 @@ class TourDetail extends Component {
   }
 
   handleDeleteLocation(loc){
+    const arr = this.state.types
+    this.state.locations.filter(i => { return i.id !== loc.id })
     this.setState({
-      locations: this.state.locations.filter(i => {return i.id !== loc.id}),
+      locations: arr,
       minTime: this.state.minTime - loc.minTime
     })
 
   }
 
   handleDeleteType(id){
+    const arr = this.state.types
+    this.state.types.filter(i => { return i.id !== id })
     this.setState({
-      types: this.state.types.filter(i => { return i.id !== id })
+      types: arr
+    })
+  }
+
+  submitLoc(id){
+    const l = this.props.loc.locations.filter(loc => { return loc.id === id })[0]
+    const arr = this.state.locations
+    arr.push(l)
+    this.setState({
+      locations: arr
+    })
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  }
+
+  submitType(id) {
+    const i = this.props.type.types.filter(loc => { return loc.id === id })[0]
+    const arr = this.state.types
+    arr.push(i)
+    this.setState({
+      types: arr
+    })
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      showConfirmButton: false,
+      timer: 1500
     })
   }
 
   handleAddLocation(){
+    return (
+      <Fragment>
+        <button className=" btn-small chip tooltipped modal-trigger"
+          href="#tour-loc" data-tooltip="Add Locations" data-position="left">
+          <i className="material-icons small">add</i>
+          </button>
 
+        <div id="tour-loc" class="modal">
+          <div className="modal-content" >
+            <h4 className="center-align">Locations</h4>
+            <hr/>
+            <div>
+              {this.props.loc.locations === null ? null : this.props.loc.locations.map(l => (
+                <p>
+                  <label>
+                    <input name="loc" type="radio" onChange={this.onChange} value={l.id}/>
+                    <span>{l.name}</span>
+                  </label>
+                </p>
+              ))}
+            </div>
+            <div className="center-align">
+              <button className="waves-effect waves-light btn" onClick={this.submitLoc.bind(this, this.state.loc)}><i class="material-icons right">send</i>Submit</button>
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    )
   }
 
-  handleAddTour(){
+  handleAddType(){
+    return(
+      <Fragment>
+        <button className=" btn-small chip tooltipped modal-trigger"
+          href="#tour-type" data-tooltip="Add Types" data-position="left">
+          <i className="material-icons small">add</i>
+        </button>
 
+        <div id="tour-type" class="modal">
+          <div className="modal-content" >
+            <h4 className="center-align">Types</h4>
+            <hr />
+            <div>
+              {this.props.type.types === null ? null : this.props.type.types.map(l => (
+                <p>
+                  <label>
+                    <input name="type" type="radio" onChange={this.onChange} value={l.id}/>
+                    <span>{l.name}</span>
+                  </label>
+                </p>
+              ))}
+            </div>
+            <div className="center-align">
+              <button className="waves-effect waves-light btn" onClick={this.submitType.bind(this, this.state.type)}type="submit"><i class="material-icons right">send</i>Submit</button>
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    )
   }
 
 
@@ -80,25 +191,6 @@ class TourDetail extends Component {
     })
   }
 
-  componentDidMount() {
-    var box = document.querySelectorAll('.materialboxed');
-    M.Materialbox.init(box);
-    var elems = document.querySelectorAll('.slider');
-    M.Slider.init(elems);
-
-    this.setState({
-      id: this.props.location.state.item.id,
-      name: this.props.location.state.item.name,
-      description: this.props.location.state.item.description,
-      locations: this.props.location.state.item.locations,
-      types: this.props.location.state.item.types,
-      thumbnail: this.props.location.state.item.thumbnail,
-      createdAt: this.props.location.state.item.createdAt,
-      createBy: this.props.location.state.item.createdBy,
-      minTime: this.props.location.state.item.minTime
-    })
-
-  }
 
   renderLogic = (item) => {
     return (
@@ -109,7 +201,7 @@ class TourDetail extends Component {
           </ul>
         </div>
         <div>
-          <form onSubmit={this.handleEdit}>
+          <div>
 
             <div class="row">
               <div class="input-field col s3">
@@ -133,23 +225,20 @@ class TourDetail extends Component {
               <div class="input-field col locs s3">
               </div>
               <div class="input-field col s6 ">
+                <br />
                 {item.locations.map(loc => (
                   <div className="left-align">
-                    <br/>
-                    <div className="chip">
+                    <div className="chip force-inline">
                       {loc.name}
                       <a onClick={() => this.handleDeleteLocation(loc)}><i className="close material-icons" >close</i></a>
                     </div>
                   </div>
                 ))}
-                <br />
-                <div className="left-align">
-                  <div className="chip">
-                    <i className="material-icons small">add</i>
-                  </div>
-                </div>
-
                 <label htmlFor="locs" className="active">Locations</label>
+                <br/>
+                <div className="left-align">
+                  {this.handleAddLocation()}
+                </div>
               </div>
             </div>
 
@@ -168,9 +257,7 @@ class TourDetail extends Component {
                 ))}
                 <br/>
                 <div className="left-align">
-                  <div className="chip">
-                    <i className="material-icons small">add</i>
-                  </div>
+                  {this.handleAddType()}
                 </div>
                 <label htmlFor="types" className="active">Types</label>
               </div>
@@ -182,7 +269,8 @@ class TourDetail extends Component {
               </div>
             </div>
 
-          </form>
+          </div>
+
           <button className="waves-effect waves-light btn-flat red-text" onClick={this.handleDelete.bind(this, item.id)}>Delete</button>
         </div>
       </Fragment>
@@ -208,10 +296,12 @@ class TourDetail extends Component {
   }
 }
 const mapStateToProps = state => ({
-  tour: state.tour
+  tour: state.tour,
+  type: state.type,
+  loc: state.loc
 });
 
 export default connect(
   mapStateToProps,
-  { deleteTourById }
+  { deleteTourById, getLocations, getTypes }
 )(TourDetail);
