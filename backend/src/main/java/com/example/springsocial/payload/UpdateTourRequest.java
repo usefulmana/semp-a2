@@ -25,4 +25,6 @@ public class UpdateTourRequest {
     private List<Location> locations;
 
     private Set<Type> types;
+
+    private int minTime;
 }

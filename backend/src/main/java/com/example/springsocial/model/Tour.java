@@ -67,7 +67,7 @@ public class Tour {
     private LocalDateTime lastUpdated;
 
     @Column(name = "min_time_in_sec")
-    private int minTime;
+    private int minTime=0;
 
     @Column(name = "last_updated_by")
     @LastModifiedBy

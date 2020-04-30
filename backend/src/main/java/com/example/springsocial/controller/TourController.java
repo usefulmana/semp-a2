@@ -146,6 +146,7 @@ public class TourController {
         tour.setLocations(request.getLocations());
         tour.setTypes(request.getTypes());
         tour.setThumbnail(request.getThumbnail());
+        tour.setMinTime(request.getMinTime());
 
         return new ResponseEntity<>(new ApiResponse(true, "Updated", tourRepository.save(tour)), HttpStatus.OK);
     }
