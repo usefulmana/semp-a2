@@ -6,9 +6,17 @@
 - Install these softwares first:
   - [maven](https://maven.apache.org/download.cgi)
   - [nodejs](https://nodejs.org/en/)
-  - [jdk(>=8)](https://openjdk.java.net/install/)
+  - [jdk(>=8)](https://openjdk.java.net/install)
+  - [MariaDB](https://downloads.mariadb.org/)
 - Clone this repo
 - Open the terminal
+- Database Setup:
+  - Login: ```mysql -u root -p```
+  - Create new database: ```create database dev;```
+  - Create new user: ```create user 'pi' identified by 'GAtech321';```
+  - Grant privilege: ```grant all privileges on dev.* to 'pi'@localhost```
+  - Flush privilege: ```flush privileges;```
+  - Exit
 - Start the backend by following these steps:
   - Move to the backend folder: ```cd backend```
   - Install dependencies: ```mvn clean install```
