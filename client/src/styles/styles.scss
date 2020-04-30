@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+}
+// General
+html,
+body,
+.login-box {
+  height: 900px;
+}
+
+.switch {
+  margin-right: 1rem;
+}
+
+.action-btn{
+  display: inline-block;
+}
+
+// .page-footer {
+//   position: sticky;
+//   bottom: 0;
+//   width: 100%;
+// }
