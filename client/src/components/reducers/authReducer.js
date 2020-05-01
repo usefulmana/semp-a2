@@ -9,6 +9,8 @@ import {
   REGISTER_FAIL,
   GENERATE_TOKEN,
   GENERATE_TOKEN_FAIL,
+  GET_USER_BY_ID,
+  GET_USER_BY_ID_FAIL,
   TOKEN_GENERATED,
   PASSWORD_RECOVERED,
   PASSWORD_RECOVERY_FAILED,
@@ -71,6 +73,11 @@ export default function (state = initialState, action) {
         message: action.payload
       }
     case PASSWORD_RECOVERY_FAILED:
+    case GET_USER_BY_ID:
+      return {
+        ...state,
+        user: action.payload
+      }
     case UPDATE_SUCCESS: {
       return {
         ...state,

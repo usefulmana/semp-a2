@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux';
 import Navbar from './../../parts/Navbar';
 import Swal from 'sweetalert2';
-import { deleteTypeById } from '../../actions/typeActions';
+import { deleteTypeById, getTypeById } from '../../actions/typeActions';
 import { Redirect } from 'react-router-dom';
 import Footer from '../../parts/Footer';
 import TourAdder from '../../parts/TourAdder';
@@ -19,6 +19,11 @@ class TypeDetail extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.onChange = this.onChange.bind(this)
   }
+
+  componentDidMount() {
+    this.props.getTypeById(this.props.match.params.id)
+  }
+
 
   handleEdit(e) {
     e.preventDefault()
@@ -94,7 +99,7 @@ class TypeDetail extends Component {
           <div className="divider"></div>
           <br />
           <div className="center-align">
-            {this.renderLogic(this.props.location.state.item)}
+            {this.renderLogic(this.props.type.type)}
             <br />
           </div>
         </div>
@@ -107,10 +112,11 @@ class TypeDetail extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  error: state.error
+  error: state.error,
+  type: state.type
 });
 
 export default connect(
   mapStateToProps,
-  { deleteTypeById }
+  { deleteTypeById, getTypeById }
 )(TypeDetail);

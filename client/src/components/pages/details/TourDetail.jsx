@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min';
 import Swal from 'sweetalert2';
-import { deleteTourById, updateTour } from './../../actions/tourActions';
-import { Redirect, Link } from 'react-router-dom';
+import { deleteTourById, updateTour, getTourById } from './../../actions/tourActions';
+import { Redirect } from 'react-router-dom';
 import Navbar from './../../parts/Navbar';
 import Footer from './../../parts/Footer';
 import { getLocations } from './../../actions/locationActions';
@@ -38,17 +38,19 @@ class TourDetail extends Component {
     var elems = document.querySelectorAll('.slider');
     M.Slider.init(elems);
     M.AutoInit()
-    this.setState({
-      id: this.props.location.state.item.id,
-      name: this.props.location.state.item.name,
-      description: this.props.location.state.item.description,
-      locations: this.props.location.state.item.locations,
-      types: this.props.location.state.item.types,
-      thumbnail: this.props.location.state.item.thumbnail,
-      minTime: this.props.location.state.item.minTime
-    })
     this.props.getLocations()
     this.props.getTypes()
+    this.props.getTourById(this.props.match.params.id)
+    this.setState({
+      id: this.props.tour.tour.id,
+      name: this.props.tour.tour.name,
+      description: this.props.tour.tour.description,
+      locations: this.props.tour.tour.locations,
+      types: this.props.tour.tour.types,
+      thumbnail: this.props.tour.tour.thumbnail,
+      minTime: this.props.tour.tour.minTime
+    })
+
   }
 
   onChange(e) {
@@ -76,12 +78,14 @@ class TourDetail extends Component {
     })
   }
 
-  submitLoc(location){
-    const l = this.props.loc.locations.filter(loc => { return loc.id === location })[0]
+  submitLoc(id){
+    const l = this.props.loc.locations.filter(loc => { return loc.id === id })[0]
+    let location = this.props.loc.locations.find(e=> e.id === id)
     const arr = this.state.locations
     arr.push(l)
     this.setState({
-      locations: arr
+      locations: arr,
+      minTime: this.state.minTime + location.minTime
     })
     Swal.fire({
       icon: 'success',
@@ -146,7 +150,7 @@ class TourDetail extends Component {
               {this.props.loc.locations === null ? null : this.props.loc.locations.map(l => (
                 <p>
                   <label>
-                    <input name="loc" type="radio" onChange={this.onChange} value={l}/>
+                    <input name="loc" type="radio" onChange={this.onChange} value={l.id}/>
                     <span>{l.name}</span>
                   </label>
                 </p>
@@ -250,6 +254,15 @@ class TourDetail extends Component {
               </div>
             </div>
 
+            <div class="row">
+              <div class="input-field col s3">
+              </div>
+              <div class="input-field col s3">
+                <input name="name" id="name" type="text" disabled className="validate" value={item.minTime} required onChange={this.onChange} />
+                <label className="active" for="name">Time(s)</label>
+              </div>
+            </div>
+
             <div className="row">
               <div class="input-field col locs s3">
               </div>
@@ -332,10 +345,11 @@ class TourDetail extends Component {
 const mapStateToProps = state => ({
   tour: state.tour,
   type: state.type,
-  loc: state.loc
+  loc: state.loc,
+  tour: state.tour
 });
 
 export default connect(
   mapStateToProps,
-  { deleteTourById, getLocations, getTypes, updateTour }
+  { deleteTourById, getLocations, getTypes, updateTour, getTourById }
 )(TourDetail);

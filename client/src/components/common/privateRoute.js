@@ -1,13 +1,14 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Loader from '../parts/Loader';
 
 const PrivateRoute = ({ component: Component, auth, ...rest }) => (
     <Route
         {...rest}
         render={(props) => {
             if (auth.isLoading) {
-                return <h2>Loading...</h2>;
+                return <Loader/>
             } else if (auth.isAuthenticated) {
               return  <Component {...props} />;
             } else {

@@ -10,7 +10,6 @@ class NewTypeForm extends Component {
       msg: ''
     })
     this.onChange = this.onChange.bind(this)
-    this.handleAddType = this.handleAddType.bind(this)
     this.resetForm = this.resetForm.bind(this)
   }
 
@@ -40,8 +39,8 @@ class NewTypeForm extends Component {
     })
   }
 
-  handleAddType = () => {
-    // e.preventDefault()
+  handleAddType = (e) => {
+    e.preventDefault()
     const { name } = this.state;
     const type = { name };
     this.props.createType(type)
@@ -52,7 +51,7 @@ class NewTypeForm extends Component {
       <Fragment>
         <button class="btn-floating btn-large red tooltipped modal-trigger" href="#modal-type" data-tooltip="Create" data-position="left"><i class="material-icons">add</i></button>
         <div id="modal-type" class="modal">
-          <form class="modal-content" id="type-form" onSubmit={this.handleAddType}>
+          <form class="modal-content" id="type-form" onSubmit={this.handleAddType.bind(this)}>
             <h4 className="center-align">Create A Type</h4>
             {this.state.msg ? <div className="animated red-text shake center-align "> {this.state.msg}</div> : null}
             <div class="row">

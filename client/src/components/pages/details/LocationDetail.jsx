@@ -3,7 +3,7 @@ import Navbar from './../../parts/Navbar';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min';
 import  Swal  from 'sweetalert2';
-import { deleteLocationById } from '../../actions/locationActions';
+import { deleteLocationById, getLocationById } from '../../actions/locationActions';
 import { Redirect } from 'react-router-dom';
 import Footer from '../../parts/Footer';
 import TourAdder from '../../parts/TourAdder';
@@ -67,7 +67,7 @@ class LocationDetail extends Component {
     M.Materialbox.init(box);
     var elems = document.querySelectorAll('.slider');
     M.Slider.init(elems);
-
+    this.props.getLocationById(this.props.match.params.id)
   }
 
   renderLogic = (item) => {
@@ -155,7 +155,7 @@ class LocationDetail extends Component {
           <div className="divider"></div>
           <br />
           <div className="center-align">
-            {this.renderLogic(this.props.location.state.item)}
+            {this.renderLogic(this.props.loc.location)}
             <br/>
           </div>
         </div>
@@ -167,10 +167,11 @@ class LocationDetail extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  error: state.error
+  error: state.error,
+  loc: state.loc
 });
 
 export default connect(
   mapStateToProps,
-  {deleteLocationById}
+  { deleteLocationById, getLocationById}
 )(LocationDetail);

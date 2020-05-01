@@ -16,7 +16,6 @@ class NewLocationForm extends Component {
 
     this.onChange = this.onChange.bind(this)
     this.resetForm = this.resetForm.bind(this)
-    this.handleAddLocation = this.handleAddLocation.bind(this)
     this.onClick = this.onClick.bind(this)
   }
 
@@ -51,7 +50,8 @@ class NewLocationForm extends Component {
     document.getElementById("location-form").value="";
   }
 
-  handleAddLocation = () => {
+  handleAddLocation = (e) => {
+    e.preventDefault()
     const { name, x, y, minTime, description } = this.state;
     const location = { name, x, y, minTime, description };
     this.props.createLocation(location)
@@ -64,7 +64,7 @@ class NewLocationForm extends Component {
           href="#modal-locations" data-tooltip="Create" data-position="left">
           <i class="material-icons">add</i></button>
         <div id="modal-locations" class="modal">
-          <form class="modal-content" id="location-form" onSubmit={this.handleAddLocation}>
+          <form class="modal-content" id="location-form" onSubmit={this.handleAddLocation.bind(this)}>
             <h4 className="center-align">Create A Location</h4>
             {this.state.msg ? <div className="animated red-text shake center-align "> {this.state.msg}</div> : null}
             <div class="row">

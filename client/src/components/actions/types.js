@@ -56,6 +56,8 @@ export const PASSWORD_CHANGED = 'PASSWORD_CHANGED';
 export const PASSWORD_CHANGE_FAIL = 'PASSWORD_CHANGE_FAIL';
 
 export const GET_ALL_USERS = 'GET_ALL_USERS';
+export const GET_USER_BY_ID = 'GET_USER_BY_ID';
+export const GET_USER_BY_ID_FAIL = 'GET_USER_BY_ID_FAIL';
 export const BAN_USER = 'BAN_USER';
 export const UNBAN_USER = 'UNBAN_USER';
 

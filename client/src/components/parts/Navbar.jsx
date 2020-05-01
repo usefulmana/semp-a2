@@ -38,7 +38,7 @@ class Navbar extends Component {
       <div>
         <nav>
           <div class="nav-wrapper teal">
-            <Link to="/home" className="brand-logo center tooltipped" data-position="bottom" data-tooltip="Home">
+            <Link to="/" className="brand-logo center tooltipped" data-position="bottom" data-tooltip="Home">
               <i className="large material-icons">museum</i>
             </Link>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>

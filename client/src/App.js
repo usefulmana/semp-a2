@@ -21,6 +21,7 @@ import UserDetail from './components/pages/details/UserDetail';
 import PasswordRecovery from './components/pages/PasswordRecovery';
 import Default from './components/pages/Default';
 
+
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
@@ -28,25 +29,26 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter>
-          <Switch>
-            <PrivateRoute path="/locations" exact component={Locations}></PrivateRoute>
-            <PrivateRoute path="/profile" exact component={Profile}></PrivateRoute>
-            <PrivateRoute path="/types" exact component={Types}></PrivateRoute>
-            <PrivateRoute path="/tours" exact component={Tours}></PrivateRoute>
-            <PrivateRoute path="/users" exact component={Users}></PrivateRoute>
-            <PrivateRoute path="/" exact component={Home}></PrivateRoute>
-            <Route path="/login" exact component={Login}></Route>
-            <Route path="/fpw" exact component={ForgotPW}></Route>
-            <Route path="/success" exact component={Success}></Route>
-            <PrivateRoute path="/location/:id" component={LocationDetail}></PrivateRoute>
-            <PrivateRoute path="/tour/:id" component={TourDetail}></PrivateRoute>
-            <PrivateRoute path="/type/:id" component={TypeDetail}></PrivateRoute>
-            <PrivateRoute path="/user/:id" component={UserDetail}></PrivateRoute>
-            <Route path="/recover/:token" component={PasswordRecovery}></Route>
-            <Route component={Default} />
-          </Switch>
-        </BrowserRouter>
+
+          <BrowserRouter>
+            <Switch>
+              <PrivateRoute path="/locations" exact component={Locations}></PrivateRoute>
+              <PrivateRoute path="/profile" exact component={Profile}></PrivateRoute>
+              <PrivateRoute path="/types" exact component={Types}></PrivateRoute>
+              <PrivateRoute path="/tours" exact component={Tours}></PrivateRoute>
+              <PrivateRoute path="/users" exact component={Users}></PrivateRoute>
+              <PrivateRoute path="/" exact component={Home}></PrivateRoute>
+              <Route path="/login" exact component={Login}></Route>
+              <Route path="/fpw" exact component={ForgotPW}></Route>
+              <Route path="/success" exact component={Success}></Route>
+              <PrivateRoute path="/location/:id" component={LocationDetail}></PrivateRoute>
+              <PrivateRoute path="/tour/:id" component={TourDetail}></PrivateRoute>
+              <PrivateRoute path="/type/:id" component={TypeDetail}></PrivateRoute>
+              <PrivateRoute path="/user/:id" component={UserDetail}></PrivateRoute>
+              <Route path="/recover/:token" component={PasswordRecovery}></Route>
+              <Route component={Default} />
+            </Switch>
+          </BrowserRouter>
       </Provider>
     );
   }

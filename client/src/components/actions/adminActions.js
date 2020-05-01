@@ -73,10 +73,13 @@ export const banAUser = (username) => (dispatch, getState) => {
   const body = JSON.stringify({username})
   axios
     .put(BAN_USER_API, body, config)
-    .then(res =>
+    .then(res =>{
+      console.log(res)
       dispatch({
         type: BAN_USER
       })
+    }
+
     )
 }
 

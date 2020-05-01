@@ -18,7 +18,7 @@ export default class Default extends Component {
   render() {
     return (
       this.state.redirect ? <Redirect to="/" /> :
-        <div id="notfound">
+        <div id="notfound" className="center-align">
           <div class="notfound">
             <div class="notfound-404">
               <h3>Oops! Page not found</h3>

@@ -15,7 +15,9 @@ import {
   PASSWORD_RECOVERED,
   PASSWORD_RECOVERY_FAILED,
   PASSWORD_CHANGED,
-  PASSWORD_CHANGE_FAIL
+  PASSWORD_CHANGE_FAIL,
+  GET_USER_BY_ID,
+  GET_USER_BY_ID_FAIL
 } from './types';
 import {
   LOGIN_API,
@@ -23,7 +25,8 @@ import {
   GENERATE_TOKEN_API,
   PW_RECOVERY_API,
   UPDATE_USER_API,
-  PASSWORD_CHANGE_API
+  PASSWORD_CHANGE_API,
+  GET_USER_BY_ID_API
 } from './../common/routes';
 import Swal from 'sweetalert2';
 
@@ -94,6 +97,33 @@ export const loadUser = () => (dispatch, getState) => {
   //   });
   // });
 };
+
+export const getUserById = (id) => (dispatch, getState) => {
+  const config = {
+    headers: {
+    }
+  };
+  const token = getState().auth.accessToken;
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token;
+  }
+
+  axios
+  .get(GET_USER_BY_ID_API, config)
+  .then(res => {
+    dispatch({
+      type: GET_USER_BY_ID,
+      payload: res.data.payload
+    })
+  })
+  // .catch(err => {
+  //   dispatch(returnErrors(err.response.data.message, err.response.status));
+  //   dispatch({
+  //     type: GET_USER_BY_ID_FAIL
+  //   });
+  // });
+
+}
 
 export const updateUser = ({ name, email }) => (dispatch, getState) => {
 

@@ -10,6 +10,7 @@ export const UPDATE_USER_API = `${ROOT_API}/user/me/update`
 export const PASSWORD_CHANGE_API = `${ROOT_API}/user/pw/to`
 export const BAN_USER_API = `${ROOT_API}/auth/ban`
 export const UNBAN_USER_API = `${ROOT_API}/auth/unban`
+export const GET_USER_BY_ID_API = `${ROOT_API}/auth/user/`
 
 export const GET_LOCATIONS_API = `${ROOT_API}/loc`
 export const GET_DELETE_UPDATE_LOCATION_BY_ID_API = `${ROOT_API}/loc/`

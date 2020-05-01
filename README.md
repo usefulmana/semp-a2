@@ -22,6 +22,7 @@
   - Install dependencies: ```mvn clean install```
   - Wait for the installations
   - Start the backend: ```mvn spring-boot:run```
+  - To view Api documentation, visit: ```localhost:8080/v2/api-docs```
 - Start the frontend by following these steps:
   - Move to the backend folder: ```cd client```
   - Install dependencies: ```npm i```

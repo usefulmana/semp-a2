@@ -61,6 +61,15 @@ public class AuthController {
         return new ResponseEntity<>(new ApiResponse(false, "No such User exists"), HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable(name = "id")String id){
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User", "id", id)
+        );
+
+        return new ResponseEntity<>(new ApiResponse(true, "Success", user), HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers(Pageable pageable){
         return new ResponseEntity<>(new ApiResponse(true, "Query Results", userRepository.findAll(pageable)), HttpStatus.OK);
