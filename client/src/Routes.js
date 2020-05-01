@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import {connect} from "react-redux";
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PrivateRoute } from './components/common/privateRoute';
+import PrivateRoute from './components/common/privateRoute';
 import Locations from './components/pages/Locations';
 import Home from './components/pages/Home';
 import Login from './components/pages/Login';
@@ -19,24 +18,25 @@ import TourDetail from './components/pages/details/TourDetail';
 import TypeDetail from './components/pages/details/TypeDetail';
 import UserDetail from './components/pages/details/UserDetail';
 
-class Routes extends Component {
+export default class Routes extends Component {
   render() {
+    // console.log(this.props.auth)
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={Login}></Route>
-          <PrivateRoute path="/home" exact component={Home} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/locations" exact component={Locations} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/profile" exact component={Profile} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/types" exact component={Types} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/tours" exact component={Tours} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/users" exact component={Users} auth={this.props.auth}></PrivateRoute>
+          <PrivateRoute path="/locations" exact component={Locations}></PrivateRoute>
+          <PrivateRoute path="/profile" exact component={Profile}></PrivateRoute>
+          <PrivateRoute path="/types" exact component={Types}></PrivateRoute>
+          <PrivateRoute path="/tours" exact component={Tours}></PrivateRoute>
+          <PrivateRoute path="/users" exact component={Users}></PrivateRoute>
+          <PrivateRoute path="/" exact component={Home}></PrivateRoute>
+          <Route path="/login" exact component={Login}></Route>
           <Route path="/fpw" exact component={ForgotPW}></Route>
           <Route path="/success" exact component={Success}></Route>
-          <PrivateRoute path="/location/:id" component={LocationDetail} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/tour/:id" component={TourDetail} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/type/:id" component={TypeDetail} auth={this.props.auth}></PrivateRoute>
-          <PrivateRoute path="/user/:id" component={UserDetail} auth={this.props.auth}></PrivateRoute>
+          <PrivateRoute path="/location/:id" component={LocationDetail}></PrivateRoute>
+          <PrivateRoute path="/tour/:id" component={TourDetail}></PrivateRoute>
+          <PrivateRoute path="/type/:id" component={TypeDetail}></PrivateRoute>
+          <PrivateRoute path="/user/:id" component={UserDetail}></PrivateRoute>
           <Route path="/recover/:token" component={PasswordRecovery}></Route>
           <Route component={Default} />
         </Switch>
@@ -45,5 +45,3 @@ class Routes extends Component {
   }
 }
 
-const mapStateToProps = state => ({ auth: state.auth});
-export default connect(mapStateToProps, {})(Routes);

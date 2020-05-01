@@ -19,5 +19,6 @@ export const GET_DELETE_UPDATE_TYPE_BY_ID_API = `${ROOT_API}/types/`
 
 export const GET_TOURS_API = `${ROOT_API}/tours`
 export const GET_DELETE_UPDATE_TOUR_BY_ID_API = `${ROOT_API}/tours/`
+export const UPDATE_TOUR_API = `${ROOT_API}/tours/update`
 export const ADD_REMOVE_LOC_FROM_TOUR_API = `${ROOT_API}/tours/loc?method=`
 export const ADD_REMOVE_TYPE_FROM_TOUR_API = `${ROOT_API}/tours/type?method=`

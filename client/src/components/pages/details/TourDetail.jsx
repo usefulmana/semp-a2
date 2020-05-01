@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min';
 import Swal from 'sweetalert2';
-import { deleteTourById} from './../../actions/tourActions';
-import { Redirect } from 'react-router-dom';
+import { deleteTourById, updateTour } from './../../actions/tourActions';
+import { Redirect, Link } from 'react-router-dom';
 import Navbar from './../../parts/Navbar';
 import Footer from './../../parts/Footer';
 import { getLocations } from './../../actions/locationActions';
@@ -58,8 +58,9 @@ class TourDetail extends Component {
   }
 
   handleDeleteLocation(loc){
-    const arr = this.state.types
-    this.state.locations.filter(i => { return i.id !== loc.id })
+    const arr = this.state.locations
+    const index = arr.findIndex(item => item.id === loc.id)
+    arr.splice(index, 1)
     this.setState({
       locations: arr,
       minTime: this.state.minTime - loc.minTime
@@ -68,15 +69,15 @@ class TourDetail extends Component {
   }
 
   handleDeleteType(id){
-    const arr = this.state.types
-    this.state.types.filter(i => { return i.id !== id })
+    // e.preventDefault()
+    const arr = this.state.types.filter(i => { return i.id !== id })
     this.setState({
       types: arr
     })
   }
 
-  submitLoc(id){
-    const l = this.props.loc.locations.filter(loc => { return loc.id === id })[0]
+  submitLoc(location){
+    const l = this.props.loc.locations.filter(loc => { return loc.id === location })[0]
     const arr = this.state.locations
     arr.push(l)
     this.setState({
@@ -90,19 +91,43 @@ class TourDetail extends Component {
     })
   }
 
-  submitType(id) {
-    const i = this.props.type.types.filter(loc => { return loc.id === id })[0]
+  submitType(type) {
+    const i = this.props.type.types.filter(loc => { return loc.id === type })[0]
     const arr = this.state.types
-    arr.push(i)
-    this.setState({
-      types: arr
-    })
-    Swal.fire({
-      icon: 'success',
-      title: 'Success',
-      showConfirmButton: false,
-      timer: 1500
-    })
+    if (arr.find(elem => elem.id === type)){
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Duplicate Entry',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+    else{
+      arr.push(i)
+      this.setState({
+        types: arr
+      })
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { error } = this.props;
+
+    if (error !== prevProps.error) {
+      // Check for register error
+      if (error.id === "UPDATE_TOUR_FAIL") {
+        this.setState({ msg: error.msg });
+      } else {
+        this.setState({ msg: null });
+      }
+    }
   }
 
   handleAddLocation(){
@@ -121,7 +146,7 @@ class TourDetail extends Component {
               {this.props.loc.locations === null ? null : this.props.loc.locations.map(l => (
                 <p>
                   <label>
-                    <input name="loc" type="radio" onChange={this.onChange} value={l.id}/>
+                    <input name="loc" type="radio" onChange={this.onChange} value={l}/>
                     <span>{l.name}</span>
                   </label>
                 </p>
@@ -168,7 +193,11 @@ class TourDetail extends Component {
   }
 
 
-  handleEdit(e) {}
+  handleEdit(e) {
+    e.preventDefault()
+    const {id, name, description, locations, types, thumbnail, minTime} = this.state;
+    this.props.updateTour({ id, name, description, locations, types, thumbnail, minTime })
+  }
 
   handleDelete(id) {
     Swal.fire({
@@ -226,16 +255,17 @@ class TourDetail extends Component {
               </div>
               <div class="input-field col s6 ">
                 <br />
-                {item.locations.map(loc => (
-                  <div className="left-align">
-                    <div className="chip force-inline">
-                      {loc.name}
-                      <a onClick={() => this.handleDeleteLocation(loc)}><i className="close material-icons" >close</i></a>
-                    </div>
-                  </div>
-                ))}
+                <div className="left-align">
+                  {item.locations.map(loc => (
+                      <button className="btn-flat btn-small" onClick={this.handleDeleteLocation.bind(this, loc)}>
+                        {loc.name}
+                        <i className="right red-text material-icons">close</i>
+                      </button>
+
+                  ))}
+                </div>
                 <label htmlFor="locs" className="active">Locations</label>
-                <br/>
+                <br />
                 <div className="left-align">
                   {this.handleAddLocation()}
                 </div>
@@ -246,15 +276,19 @@ class TourDetail extends Component {
               <div class="input-field col types s3">
               </div>
               <div class="input-field col s6 ">
-                {item.types.map(t => (
-                  <div className="left-align">
-                    <br />
-                    <div className="chip">
-                      {t.name}
-                      <a onClick={() => this.handleDeleteType(t.id)}><i className="close material-icons" >close</i></a>
-                    </div>
-                  </div>
-                ))}
+                <br />
+                <div className="left-align">
+
+                    {item.types.map(t => (
+
+                        <button className="btn-flat btn-small" onClick={this.handleDeleteType.bind(this, t.id)}>
+                          {t.name}
+                          <i className="right material-icons red-text"  >close</i>
+                        </button>
+
+                    ))}
+
+                </div>
                 <br/>
                 <div className="left-align">
                   {this.handleAddType()}
@@ -265,7 +299,7 @@ class TourDetail extends Component {
 
             <div className="row">
               <div className="center-align">
-                <button className="waves-effect waves-light btn" type="submit"><i class="material-icons right">send</i>Submit</button>
+                <button className="waves-effect waves-light btn" type="submit" onClick={this.handleEdit.bind(this)}><i class="material-icons right">send</i>Submit</button>
               </div>
             </div>
 
@@ -303,5 +337,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteTourById, getLocations, getTypes }
+  { deleteTourById, getLocations, getTypes, updateTour }
 )(TourDetail);

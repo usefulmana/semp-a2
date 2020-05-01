@@ -6,6 +6,7 @@ import {
   ADD_TOUR,
   ADD_TOUR_FAIL,
   UPDATE_TOUR,
+  UPDATE_TOUR_FAIL,
   DELETE_TOUR,
   DELETE_TOUR_FAIL,
   ADD_LOC_TO_TOUR,
@@ -21,7 +22,8 @@ import {
   GET_TOURS_API,
   GET_DELETE_UPDATE_TOUR_BY_ID_API,
   ADD_REMOVE_TYPE_FROM_TOUR_API,
-  ADD_REMOVE_LOC_FROM_TOUR_API
+  ADD_REMOVE_LOC_FROM_TOUR_API,
+  UPDATE_TOUR_API
 }
   from '../common/routes';
 import Swal from 'sweetalert2';
@@ -124,6 +126,40 @@ export const deleteTourById = (id) => (dispatch, getState) => {
   //     type: DELETE_LOCATION_FAIL
   //   });
   // });
+}
+
+export const updateTour = (tour) => (dispatch, getState) => {
+  const token = getState().auth.accessToken;
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token;
+  }
+  const body = JSON.stringify(tour)
+  axios
+    .put(UPDATE_TOUR_API, body, config)
+    .then(res =>{
+      dispatch({
+        type: UPDATE_TOUR,
+        payload: res.data.payload
+      })
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+    )
+  .catch(err => {
+    dispatch(returnErrors(err.response.data.payload.message, err.response.status));
+    dispatch({
+      type: UPDATE_TOUR_FAIL
+    });
+  });
 }
 
 export const addRemoveLocToTour = (tour_id, loc_id, method) => (dispatch, getState) => {

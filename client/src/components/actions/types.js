@@ -24,6 +24,7 @@ export const ADD_TOUR_FAIL = 'ADD_TOUR_FAIL';
 export const DELETE_TOUR = 'DELETE_TOUR';
 export const DELETE_TOUR_FAIL = 'DELETE_TOUR_FAIL';
 export const UPDATE_TOUR = 'UPDATE_TOUR';
+export const UPDATE_TOUR_FAIL = 'UPDATE_TOUR_FAIL';
 export const ADD_LOC_TO_TOUR = 'ADD_LOC_TO_TOUR';
 export const ADD_LOC_TO_TOUR_FAIL = 'ADD_LOC_TO_TOUR_FAIL';
 export const REMOVE_LOC_TO_TOUR = 'REMOVE_LOC_TO_TOUR';

@@ -4,6 +4,7 @@ import {
   ADD_TOUR,
   ADD_TOUR_FAIL,
   UPDATE_TOUR,
+  UPDATE_TOUR_FAIL,
   DELETE_TOUR,
   DELETE_TOUR_FAIL,
   ADD_LOC_TO_TOUR,
@@ -41,6 +42,14 @@ export default function (state = initialState, action) {
         ...state,
         tours: state.tours.filter(item => item.id !== idToBeDeleted)
       }
+    case UPDATE_TOUR:
+      return {
+        ...state,
+        tour: action.payload
+      }
+    case UPDATE_TOUR_FAIL:
+    case ADD_TOUR_FAIL:
+    case DELETE_TOUR_FAIL:
     case ADD_LOC_TO_TOUR:
     case ADD_TYPE_TO_TOUR:
     case REMOVE_LOC_TO_TOUR:
