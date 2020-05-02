@@ -134,7 +134,7 @@ class TourAdder extends Component {
   render() {
     return (
       <Fragment>
-        {this.renderLogic(this.props.item)}
+        {this.props.auth.user.role !== 'ROLE_ADMIN' ? null : this.renderLogic(this.props.item)}
       </Fragment>
     )
   }

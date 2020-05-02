@@ -44,10 +44,7 @@ class Types extends Component {
       <tr>
         <td>
           <Link to={{
-            pathname: `/type/${t.id}`,
-            state: {
-              item: t
-            }
+            pathname: `/type/${t.id}`
           }}>{t.name}</Link>
         </td>
         <td>
@@ -67,10 +64,7 @@ class Types extends Component {
         <div class="card horizontal hoverable">
           <div class="card-stacked">
             <Link to={{
-              pathname: `/type/${t.id}`,
-              state: {
-                item: t
-              }
+              pathname: `/type/${t.id}`
             }}>
               <div class="card-content">
                 <div className="card-title center-align">{t.name}</div>

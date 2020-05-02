@@ -73,11 +73,6 @@ export default function (state = initialState, action) {
         message: action.payload
       }
     case PASSWORD_RECOVERY_FAILED:
-    case GET_USER_BY_ID:
-      return {
-        ...state,
-        user: action.payload
-      }
     case UPDATE_SUCCESS: {
       return {
         ...state,

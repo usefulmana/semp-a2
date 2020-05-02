@@ -10,13 +10,15 @@ import {
   ADD_LOC_TO_TOUR,
   REMOVE_LOC_TO_TOUR,
   ADD_TYPE_TO_TOUR,
-  REMOVE_TYPE_TO_TOUR
+  REMOVE_TYPE_TO_TOUR,
+  GET_TOUR_BY_NAME,
+  GET_TOUR_BY_NAME_FAIL
 } from './../actions/types';
 
 const initialState = {
   tours: null,
   tour: null,
-  query: null
+  query_result: null
 };
 
 export default function (state = initialState, action) {
@@ -47,6 +49,12 @@ export default function (state = initialState, action) {
         ...state,
         tour: action.payload
       }
+    case GET_TOUR_BY_NAME:
+      return {
+        ...state,
+        tours: action.payload
+      }
+    case GET_TOUR_BY_NAME_FAIL:
     case UPDATE_TOUR_FAIL:
     case ADD_TOUR_FAIL:
     case DELETE_TOUR_FAIL:

@@ -46,11 +46,13 @@ export const getLocationById = (id) => (dispatch, getState) => {
 
   axios
     .get(GET_DELETE_UPDATE_LOCATION_BY_ID_API + id, config)
-    .then(res =>
+    .then(res =>{
       dispatch({
         type: GET_LOCATION_BY_ID,
         payload: res.data.payload
       })
+    }
+
     )
     .catch(err => {
       dispatch(returnErrors(err.response.data.payload.message, err.response.status));

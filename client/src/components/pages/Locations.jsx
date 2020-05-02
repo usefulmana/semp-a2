@@ -23,9 +23,6 @@ class Locations extends Component {
         <td>
           <Link to={{
             pathname: `/location/${loc.id}`,
-            state: {
-              item: loc
-            }
           }}>
             {loc.name}
           </Link>
@@ -56,9 +53,6 @@ class Locations extends Component {
             <div className="card-stacked">
             <Link to={{
               pathname: `/location/${loc.id}`,
-              state: {
-                item: loc
-              }
             }}>
               <div className="card-content">
                 <div className="card-title">{loc.name}</div>

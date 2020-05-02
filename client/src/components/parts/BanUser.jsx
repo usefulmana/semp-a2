@@ -6,20 +6,23 @@ import Swal from 'sweetalert2';
 class BanUser extends Component {
 
   renderLogic(){
-    if (this.props.item.isActive){
-      return (
-        <Fragment>
-          <button className="btn" onClick={this.handleBan.bind(this, this.props.item.userName)}>Ban</button>
-        </Fragment>
-      )
+    if (this.props.item !== null){
+      if (this.props.item.isActive) {
+        return (
+          <Fragment>
+            <button className="btn" onClick={this.handleBan.bind(this, this.props.item.userName)}>Ban</button>
+          </Fragment>
+        )
+      }
+      else if (!this.props.item.isActive) {
+        return (
+          <Fragment>
+            <button className="btn" onClick={this.handleUnBan.bind(this, this.props.item.userName)}>UnBan</button>
+          </Fragment>
+        )
+      }
     }
-    else if (!this.props.item.isActive){
-      return (
-        <Fragment>
-          <button className="btn" onClick={this.handleUnBan.bind(this, this.props.item.userName)}>UnBan</button>
-        </Fragment>
-      )
-    }
+
   }
 
   handleBan = (username) => {
@@ -68,13 +71,13 @@ class BanUser extends Component {
   render() {
     return (
       <div>
-        {this.renderLogic()}
+        {this.props.auth.user.role !== 'ROLE_ADMIN' ? null :this.renderLogic()}
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ({auth: state.auth
 });
 export default connect(
   mapStateToProps,

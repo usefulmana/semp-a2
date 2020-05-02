@@ -99,7 +99,7 @@ class TypeDetail extends Component {
           <div className="divider"></div>
           <br />
           <div className="center-align">
-            {this.renderLogic(this.props.type.type)}
+            {this.props.type.type===null? null : this.renderLogic(this.props.type.type)}
             <br />
           </div>
         </div>

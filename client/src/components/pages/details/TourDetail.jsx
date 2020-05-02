@@ -9,7 +9,6 @@ import Footer from './../../parts/Footer';
 import { getLocations } from './../../actions/locationActions';
 import { getTypes } from './../../actions/typeActions';
 
-
 class TourDetail extends Component {
 
   constructor(props) {
@@ -41,16 +40,41 @@ class TourDetail extends Component {
     this.props.getLocations()
     this.props.getTypes()
     this.props.getTourById(this.props.match.params.id)
-    this.setState({
-      id: this.props.tour.tour.id,
-      name: this.props.tour.tour.name,
-      description: this.props.tour.tour.description,
-      locations: this.props.tour.tour.locations,
-      types: this.props.tour.tour.types,
-      thumbnail: this.props.tour.tour.thumbnail,
-      minTime: this.props.tour.tour.minTime
-    })
 
+    setTimeout(() => {
+      if (this.props.tour.tour !== null) {
+        this.setState({
+          id: this.props.tour.tour.id,
+          name: this.props.tour.tour.name,
+          description: this.props.tour.tour.description,
+          locations: this.props.tour.tour.locations,
+          types: this.props.tour.tour.types,
+          thumbnail: this.props.tour.tour.thumbnail,
+          minTime: this.props.tour.tour.minTime
+        })
+      }}, 1000)
+
+  }
+  componentDidUpdate(prevProps) {
+    const { error } = this.props;
+    // const { tour } = this.props.tour.tour;
+
+    // if (tour !== undefined){
+    //   if (tour.id !== prevProps.id) {
+    //     // Check for register error
+
+    //   }
+    // }
+
+
+    if (error !== prevProps.error) {
+      // Check for register error
+      if (error.id === "UPDATE_TOUR_FAIL") {
+        this.setState({ msg: error.msg });
+      } else {
+        this.setState({ msg: null });
+      }
+    }
   }
 
   onChange(e) {
@@ -121,18 +145,7 @@ class TourDetail extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { error } = this.props;
 
-    if (error !== prevProps.error) {
-      // Check for register error
-      if (error.id === "UPDATE_TOUR_FAIL") {
-        this.setState({ msg: error.msg });
-      } else {
-        this.setState({ msg: null });
-      }
-    }
-  }
 
   handleAddLocation(){
     return (

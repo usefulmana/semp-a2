@@ -17,10 +17,7 @@ class Users extends Component {
       <tr>
         <td>
           <Link to={{
-            pathname: `/user/${loc.id}`,
-            state: {
-              item: loc
-            }
+            pathname: `/user/${loc.id}`
           }}>{loc.userName}</Link>
         </td>
         <td>{loc.name}</td>
@@ -41,10 +38,7 @@ class Users extends Component {
         <div class="card horizontal hoverable">
           <div class="card-stacked">
             <Link to={{
-              pathname: `/user/${loc.id}`,
-              state: {
-                item: loc
-              }
+              pathname: `/user/${loc.id}`
             }}>
               <div class="card-content">
                 <div className="card-title">{loc.name}</div>

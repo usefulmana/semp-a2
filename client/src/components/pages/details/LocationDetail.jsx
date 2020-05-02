@@ -26,6 +26,15 @@ class LocationDetail extends Component {
 
   }
 
+  componentDidMount() {
+    this.props.getLocationById(this.props.match.params.id)
+    var box = document.querySelectorAll('.materialboxed');
+    M.Materialbox.init(box);
+    var elems = document.querySelectorAll('.slider');
+    M.Slider.init(elems);
+
+  }
+
   handleEdit(e) {
     e.preventDefault()
     Swal.fire({
@@ -62,13 +71,7 @@ class LocationDetail extends Component {
   }
 
 
-  componentDidMount() {
-    var box = document.querySelectorAll('.materialboxed');
-    M.Materialbox.init(box);
-    var elems = document.querySelectorAll('.slider');
-    M.Slider.init(elems);
-    this.props.getLocationById(this.props.match.params.id)
-  }
+
 
   renderLogic = (item) => {
     return (
@@ -155,7 +158,7 @@ class LocationDetail extends Component {
           <div className="divider"></div>
           <br />
           <div className="center-align">
-            {this.renderLogic(this.props.loc.location)}
+            {this.props.loc.location === null ? null : this.renderLogic(this.props.loc.location)}
             <br/>
           </div>
         </div>

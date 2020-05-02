@@ -3,6 +3,8 @@ import { returnErrors } from './errorActions';
 import {
   GET_TOURS,
   GET_TOUR_BY_ID,
+  GET_TOUR_BY_NAME,
+  GET_TOUR_BY_NAME_FAIL,
   ADD_TOUR,
   ADD_TOUR_FAIL,
   UPDATE_TOUR,
@@ -23,7 +25,8 @@ import {
   GET_DELETE_UPDATE_TOUR_BY_ID_API,
   ADD_REMOVE_TYPE_FROM_TOUR_API,
   ADD_REMOVE_LOC_FROM_TOUR_API,
-  UPDATE_TOUR_API
+  UPDATE_TOUR_API,
+  GET_TOURS_BY_NAME_API
 }
   from '../common/routes';
 import Swal from 'sweetalert2';
@@ -65,6 +68,32 @@ export const getTourById = (id) => (dispatch, getState) => {
         payload: res.data.payload
       })
     })
+}
+
+export const getToursByName = (name) => (dispatch, getState) => {
+  const token = getState().auth.accessToken;
+  const config = {
+    headers: {
+    }
+  };
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token;
+  }
+
+  axios
+    .get(GET_TOURS_BY_NAME_API + name, config)
+    .then(res => {
+      dispatch({
+        type: GET_TOUR_BY_NAME,
+        payload: res.data.payload.content
+      })
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data.payload.message, err.response.status));
+      dispatch({
+        type: GET_TOUR_BY_NAME_FAIL
+      });
+    });
 }
 
 export const createTour = (tour) => (dispatch, getState) => {

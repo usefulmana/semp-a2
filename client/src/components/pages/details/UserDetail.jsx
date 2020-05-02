@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux';
 import Navbar from '../../parts/Navbar';
 import ChangePWForm from '../../forms/ChangePWForm';
-import {updateUser, getUserById} from '../../actions/authActions'
+import {updateUser} from '../../actions/authActions';
 import BanUser from '../../parts/BanUser';
+import { getUserById, adminUpdateUser } from './../../actions/adminActions';
 
 class UserDetail extends Component {
   constructor() {
@@ -26,7 +27,23 @@ class UserDetail extends Component {
 
   componentDidMount() {
     this.props.getUserById(this.props.match.params.id)
+    if (this.props.admin.user !== null){
+      this.setState({
+        name: this.props.admin.user.name,
+        email: this.props.admin.user.email,
+        userName: this.props.admin.user.userName,
+        role: this.props.admin.user.role,
+        isActive: this.props.admin.user.isActive,
+      })
+    }
   }
+
+  handleUpdateUser = (e) => {
+    e.preventDefault()
+    const {name, email, role} = this.state;
+
+    this.props.adminUpdateUser({ name, email, role })
+}
 
   onChange = (e) => {
     this.setState({
@@ -43,7 +60,8 @@ class UserDetail extends Component {
           <div className="divider"></div>
           <br />
           <div className="row">
-            <form className="col s12">
+            {this.props.admin.user === null ? null :
+            <form className="col s12" onSubmit={this.handleUpdateUser.bind(this)}>
               <div className="row">
                 <div class="user-view center">
                   <a href="#user" type="file"><img className="circle" src="https://materializecss.com/images/yuna.jpg" alt="user profile pic" /></a>
@@ -57,11 +75,11 @@ class UserDetail extends Component {
                 <div class="input-field col s3">
                 </div>
                 <div class="input-field col s4">
-                  <input name="name" id="name" value={this.props.auth.user.name} type="text" className="validate" required minLength="4" onChange={this.onChange} />
+                  <input name="name" id="name" value={this.state.name} type="text" className="validate" required minLength="4" onChange={this.onChange} />
                   <label className="active" for="name">Name</label>
                 </div>
                 <div class="input-field col s2">
-                  <input id="userName" disabled value={this.props.auth.user.userName} type="text" />
+                    <input id="userName" disabled value={this.state.userName} type="text" />
                   <label className="active" for="userName">Username</label>
                 </div>
               </div>
@@ -71,11 +89,11 @@ class UserDetail extends Component {
                 <div class="input-field col s3">
                 </div>
                 <div class="input-field col s4">
-                  <input name="email" id="email" value={this.props.auth.user.email} type="email" className="validate" required minLength="4" onChange={this.onChange} />
+                    <input name="email" id="email" value={this.state.email} type="email" className="validate" required minLength="4" onChange={this.onChange} />
                   <label className="active" for="email">Email</label>
                 </div>
                 <div class="input-field col s2">
-                  <input disabled id="status" value={this.props.auth.user.isActive? "Active": "Banned"} type="text" />
+                    <input disabled id="status" value={this.state.isActive? "Active": "Banned"} type="text" />
                   <label className="active" for="status">Status</label>
                 </div>
               </div>
@@ -84,7 +102,7 @@ class UserDetail extends Component {
                 <div className="input-field col s3">
                 </div>
                 <div className="input-field col s6">
-                  <select name="role" id='role' className="browser-default" onChange={this.onChange} value={this.props.auth.user.role}>
+                    <select name="role" id='role' className="browser-default" onChange={this.onChange} value={this.state.role}>
                     <option value="" disabled selected>Choose A Role</option>
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
@@ -92,9 +110,15 @@ class UserDetail extends Component {
                   <label htmlFor="role" className="active">Role</label>
                 </div>
               </div>
-            </form>
+
+              <div className="row">
+                <div className="center-align">
+                  <button type="submit" className="btn waves-effect waves-light"><i className="material-icons right">send</i>Submit</button>
+                </div>
+              </div>
+            </form>}
             <div className="center-align">
-              <BanUser item={this.props.auth.user} />
+              <BanUser item={this.props.admin.user} />
               <br/>
               <ChangePWForm/>
             </div>
@@ -106,9 +130,10 @@ class UserDetail extends Component {
 }
 const mapStateToProps = state => ({
   auth: state.auth,
+  admin: state.admin,
   error: state.error
 });
 export default connect(
   mapStateToProps,
-  { updateUser, getUserById }
+  { updateUser, getUserById, adminUpdateUser }
 )(UserDetail);

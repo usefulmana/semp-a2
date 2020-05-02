@@ -81,17 +81,16 @@ class Home extends Component {
                   </div>
                 </Link>
 
-
-                <Link to="/users">
-                  <div class="col s12 m2">
-                    <div class="card-panel teal center-align " >
-                      <span class="white-text"><i className="large material-icons">assignment_ind</i> <br /> Users
+                {this.props.auth.user.role === 'ROLE_USER' ? null :
+                  <Link to="/users">
+                    <div class="col s12 m2">
+                      <div class="card-panel teal center-align " >
+                        <span class="white-text"><i className="large material-icons">assignment_ind</i> <br /> Users
                       </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-
-
+                  </Link>
+                }
               </div>
             </div>
           </div>

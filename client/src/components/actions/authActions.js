@@ -71,8 +71,7 @@ export const logout = () => {
 
 export const loadUser = () => (dispatch, getState) => {
   dispatch({ type: USER_LOADING });
-  const token = getState().auth.accessToken;
-
+  const token = localStorage.getItem('accessToken');
   const config = {
     headers: {
     }
@@ -98,32 +97,7 @@ export const loadUser = () => (dispatch, getState) => {
   // });
 };
 
-export const getUserById = (id) => (dispatch, getState) => {
-  const config = {
-    headers: {
-    }
-  };
-  const token = getState().auth.accessToken;
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
 
-  axios
-  .get(GET_USER_BY_ID_API, config)
-  .then(res => {
-    dispatch({
-      type: GET_USER_BY_ID,
-      payload: res.data.payload
-    })
-  })
-  // .catch(err => {
-  //   dispatch(returnErrors(err.response.data.message, err.response.status));
-  //   dispatch({
-  //     type: GET_USER_BY_ID_FAIL
-  //   });
-  // });
-
-}
 
 export const updateUser = ({ name, email }) => (dispatch, getState) => {
 

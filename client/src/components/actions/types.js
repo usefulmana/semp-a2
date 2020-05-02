@@ -19,6 +19,7 @@ export const UPDATE_TYPE = 'UPDATE_TYPE';
 export const GET_TOURS = 'GET_TOURS';
 export const GET_TOUR_BY_ID = 'GET_TOUR_BY_ID';
 export const GET_TOUR_BY_NAME = 'GET_TOUR_BY_NAME';
+export const GET_TOUR_BY_NAME_FAIL = 'GET_TOUR_BY_NAME_FAIL';
 export const ADD_TOUR = 'ADD_TOUR';
 export const ADD_TOUR_FAIL = 'ADD_TOUR_FAIL';
 export const DELETE_TOUR = 'DELETE_TOUR';
@@ -60,7 +61,8 @@ export const GET_USER_BY_ID = 'GET_USER_BY_ID';
 export const GET_USER_BY_ID_FAIL = 'GET_USER_BY_ID_FAIL';
 export const BAN_USER = 'BAN_USER';
 export const UNBAN_USER = 'UNBAN_USER';
-
+export const ADMIN_UPDATE_USER = 'ADMIN_UPDATE_USER';
+export const ADMIN_UPDATE_USER_FAIL = 'ADMIN_UPDATE_USER_FAIL';
 
 export const UI_LOCATIONS = 'UI_LOCATIONS';
 export const UI_TOURS = 'UI_TOURS';
