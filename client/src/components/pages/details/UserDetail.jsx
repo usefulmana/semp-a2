@@ -110,18 +110,23 @@ class UserDetail extends Component {
                   <label htmlFor="role" className="active">Role</label>
                 </div>
               </div>
+                {this.props.auth.user.role === "ROLE_USER" ? null :
+                  <div className="row">
+                    <div className="center-align">
+                      <button type="submit" className="btn waves-effect waves-light"><i className="material-icons right">send</i>Submit</button>
+                    </div>
+                  </div>
+                }
 
-              <div className="row">
-                <div className="center-align">
-                  <button type="submit" className="btn waves-effect waves-light"><i className="material-icons right">send</i>Submit</button>
-                </div>
-              </div>
             </form>}
-            <div className="center-align">
-              <BanUser item={this.props.admin.user} />
-              <br/>
-              <ChangePWForm/>
-            </div>
+            {this.props.auth.user.role === "ROLE_USER"? null :
+              <div className="center-align">
+                <BanUser item={this.props.admin.user} />
+                <br />
+                <ChangePWForm />
+              </div>
+
+            }
           </div>
         </div>
       </div>

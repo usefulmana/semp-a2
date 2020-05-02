@@ -1,10 +1,7 @@
 package com.example.springsocial.controller;
 
 import com.example.springsocial.exception.ResourceNotFoundException;
-import com.example.springsocial.model.ConfirmationToken;
-import com.example.springsocial.model.Email;
-import com.example.springsocial.model.Token;
-import com.example.springsocial.model.User;
+import com.example.springsocial.model.*;
 import com.example.springsocial.payload.*;
 import com.example.springsocial.repository.TokenRepository;
 import com.example.springsocial.repository.UserRepository;
@@ -60,6 +57,24 @@ public class UserController {
 
         user.setEmail(request.getEmail());
         user.setName(request.getName());
+        return userRepository.save(user);
+    }
+
+    @PutMapping("/update")
+    public User adminUpdateUserInfo(@Valid @RequestBody AdminUpdateUserInfo request){
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", request.getEmail()));
+
+        user.setEmail(request.getEmail());
+        user.setName(request.getName());
+
+        if (request.getRole().equalsIgnoreCase("ROLE_USER")){
+            user.setRole(Role.ROLE_USER);
+        }
+        if (request.getRole().equalsIgnoreCase("ROLE_ADMIN")){
+            user.setRole(Role.ROLE_ADMIN);
+        }
+
         return userRepository.save(user);
     }
 

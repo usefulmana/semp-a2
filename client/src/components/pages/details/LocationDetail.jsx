@@ -138,12 +138,21 @@ class LocationDetail extends Component {
             <div className="row">
               <div className="center-align">
                 {/* <AddToTourForm target={item.id} timestamp={new Date().toString()}/> */}
-                <button className="waves-effect waves-light btn" type="submit"><i class="material-icons right">send</i>Submit</button>
+                {this.props.auth.user.role === "ROLE_USER" ? null :
+                  <button className="waves-effect waves-light btn" type="submit"><i class="material-icons right">send</i>Submit</button>
+                }
               </div>
             </div>
           </form>
-          <button className="waves-effect waves-light btn-flat red-text" onClick={this.handleDelete.bind(this, item.id)}>Delete</button>
-          <TourAdder item={item} />
+          {this.props.auth.user.role === "ROLE_USER"? null :
+
+              <Fragment>
+                <button className="waves-effect waves-light btn-flat red-text" onClick={this.handleDelete.bind(this, item.id)}>Delete</button>
+                <TourAdder item={item} />
+              </Fragment>
+
+          }
+
         </div>
       </Fragment>
     )

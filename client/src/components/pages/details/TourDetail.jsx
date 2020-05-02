@@ -323,15 +323,19 @@ class TourDetail extends Component {
               </div>
             </div>
 
-            <div className="row">
-              <div className="center-align">
-                <button className="waves-effect waves-light btn" type="submit" onClick={this.handleEdit.bind(this)}><i class="material-icons right">send</i>Submit</button>
+              <div className="row">
+                <div className="center-align">
+                  <button className="waves-effect waves-light btn" type="submit" onClick={this.handleEdit.bind(this)}><i class="material-icons right">send</i>Submit</button>
+                </div>
               </div>
-            </div>
+            }
+
 
           </div>
+          {this.props.auth.user.role === "ROLE_USER" ? null :
+            <button className="waves-effect waves-light btn-flat red-text" onClick={this.handleDelete.bind(this, item.id)}>Delete</button>
+          }
 
-          <button className="waves-effect waves-light btn-flat red-text" onClick={this.handleDelete.bind(this, item.id)}>Delete</button>
         </div>
       </Fragment>
     )
@@ -356,6 +360,7 @@ class TourDetail extends Component {
   }
 }
 const mapStateToProps = state => ({
+  auth: state.auth,
   tour: state.tour,
   type: state.type,
   loc: state.loc,
