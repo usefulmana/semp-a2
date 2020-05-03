@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -30,12 +31,14 @@ public class TourController {
     private TypeRepository typeRepository;
 
     @GetMapping("")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> getAllTours(Pageable pageable){
         return new ResponseEntity<>(new ApiResponse(true, "Query Results", tourRepository.findAll(pageable)),
                 HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> getATour(@PathVariable(name = "id")String id){
         Tour tour = tourRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Tour", "id", id)
@@ -44,6 +47,7 @@ public class TourController {
     }
 
     @GetMapping("/search/{name}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> searchForTours(@PathVariable(name = "name") String name,
                                             Pageable pageable){
         Page<Tour> tours = tourRepository.findByNameContainingIgnoreCase(name, pageable);
@@ -51,6 +55,7 @@ public class TourController {
     }
 
     @PostMapping("")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> createATour(@Valid @RequestBody TourRequest request){
         Tour tour = new Tour();
         tour.setName(request.getName());
@@ -60,6 +65,7 @@ public class TourController {
     }
 
     @DeleteMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> deleteATour(@PathVariable(name = "id")String id){
         Tour tour = tourRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Tour", "id", id)
@@ -70,6 +76,7 @@ public class TourController {
     
 
     @PatchMapping("/loc")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> addOrRemoveALocToATour(@Valid @RequestBody TourLocationRequest request,
                                                     @RequestParam(name = "method") String method){
         Tour tour = tourRepository.findById(request.getTour_id()).orElseThrow(
@@ -104,6 +111,7 @@ public class TourController {
     }
 
     @PatchMapping("/type")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> addOrRemoveATypeToATour(@Valid @RequestBody TourTypeRequest request,
                                                     @RequestParam(name = "method") String method){
         Tour tour = tourRepository.findById(request.getTour_id()).orElseThrow(
@@ -136,6 +144,7 @@ public class TourController {
     }
 
     @PutMapping("/update")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> updateTour(@Valid @RequestBody UpdateTourRequest request){
         Tour tour = tourRepository.findById(request.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Tour", "id", request.getId())

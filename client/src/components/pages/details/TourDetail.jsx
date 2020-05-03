@@ -322,13 +322,16 @@ class TourDetail extends Component {
                 <label htmlFor="types" className="active">Types</label>
               </div>
             </div>
-
+            {this.props.auth.user.role === "ROLE_USER" ? null :
               <div className="row">
                 <div className="center-align">
                   <button className="waves-effect waves-light btn" type="submit" onClick={this.handleEdit.bind(this)}><i class="material-icons right">send</i>Submit</button>
                 </div>
               </div>
+
             }
+
+
 
 
           </div>

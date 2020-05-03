@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
@@ -44,12 +45,14 @@ public class UserController {
     private EmailSenderService emailSenderService;
 
     @GetMapping("/me")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
     @PutMapping("/me/update")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public User updateUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                             @Valid @RequestBody UpdateInfoRequest request){
         User user = userRepository.findById(userPrincipal.getId())
@@ -61,6 +64,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
+    @Secured({"ROLE_ADMIN"})
     public User adminUpdateUserInfo(@Valid @RequestBody AdminUpdateUserInfo request){
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", request.getEmail()));
@@ -79,6 +83,7 @@ public class UserController {
     }
 
     @PostMapping("/pw/to")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> changePassword(@CurrentUser UserPrincipal userPrincipal,
                                             @Valid @RequestBody PasswordChangeRequest request){
         User user = userRepository.findById(userPrincipal.getId())

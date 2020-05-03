@@ -65,7 +65,9 @@ class Navbar extends Component {
           <li><Link to="/locations">Locations</Link></li>
           <li><Link to="/types">Types</Link></li>
           <li><Link to="/tours">Tours</Link></li>
-          <li><Link to="/users">Users</Link></li>
+          {this.props.auth.user.role === "ROLE_USER" ? null:
+            <li><Link to="/users">Users</Link></li>
+          }
         </ul>
 
         <ul class="sidenav" id="mobile-demo">
@@ -73,7 +75,9 @@ class Navbar extends Component {
           <li><Link to="/locations">Locations</Link></li>
           <li><Link to="/types">Types</Link></li>
           <li><Link to="/tours">Tours</Link></li>
-          <li><Link to="/users">Users</Link></li>
+          {this.props.auth.user.role === "ROLE_USER" ? null :
+            <li><Link to="/users">Users</Link></li>
+          }
           <li className="divider"></li>
         </ul>
       </div>

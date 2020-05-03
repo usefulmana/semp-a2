@@ -62,6 +62,7 @@ export const login = ({ username, password }) => dispatch => {
 
 
 export const logout = () => {
+  localStorage.removeItem('state')
   return {
     type: LOGOUT_SUCCESS
   };

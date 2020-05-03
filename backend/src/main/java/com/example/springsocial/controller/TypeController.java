@@ -10,6 +10,7 @@ import com.example.springsocial.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -28,12 +29,14 @@ public class TypeController {
     private TourRepository tourRepository;
 
     @GetMapping("")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> getAllTypes(Pageable pageable){
         return new ResponseEntity<>(new ApiResponse(true, "Query Results",
                 typeRepository.findAll(pageable)), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> getAType(@PathVariable(name = "id") String id){
         Type type = typeRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Type", "id", id));
@@ -41,6 +44,7 @@ public class TypeController {
     }
 
     @PostMapping("")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> createAType(@Valid @RequestBody TypeRequest request){
         Type type = new Type();
         type.setName(request.getName());
@@ -49,6 +53,7 @@ public class TypeController {
     }
 
     @DeleteMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> deleteAType(@PathVariable(name = "id") String id){
         Type type = typeRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Type", "id", id));
@@ -69,6 +74,7 @@ public class TypeController {
 
     // TODO Edit Functionality In Sprint II
     @PutMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> updateAType(@PathVariable(name = "id") String id){
         return null;
     }

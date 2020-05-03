@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class LocationController {
     private TourRepository tourRepository;
 
     @GetMapping("")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> getAllLocations(Pageable pageable){
 //        if (sort.trim().equalsIgnoreCase("desc")){
 //            return new ResponseEntity<>(new ApiResponse(true, "Query Results",
@@ -43,13 +45,15 @@ public class LocationController {
     }
 
     @GetMapping("/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<?> getALocation(@PathVariable(name = "id") String id){
         Location location = locationRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Location", "id", id));
-        return new ResponseEntity<>(new ApiResponse(true, "Location Created!", location), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true, "Location Found!", location), HttpStatus.OK);
     }
 
     @PostMapping("")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<?> createALocation(@Valid @RequestBody LocationRequest request){
         Location location = new Location();
         location.setName(request.getName());
@@ -58,11 +62,12 @@ public class LocationController {
         location.setDescription(request.getDescription());
         location.setMinTime(request.getMinTime());
 
-        return new ResponseEntity<>(new ApiResponse(true, "Location found", locationRepository.save(location))
+        return new ResponseEntity<>(new ApiResponse(true, "Location Created!", locationRepository.save(location))
                 , HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<?> deleteALocation(@PathVariable(name = "id") String id){
         Location location = locationRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Location", "id", id));
@@ -83,6 +88,7 @@ public class LocationController {
 
     // TODO Edit Functionality In Sprint II
     @PutMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<?> updateALocation(@PathVariable(name = "id") String id){
         return null;
     }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,6 +63,7 @@ public class AuthController {
     }
 
     @GetMapping("/user/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> getUserById(@PathVariable(name = "id")String id){
         User user = userRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("User", "id", id)
@@ -71,11 +73,13 @@ public class AuthController {
     }
 
     @GetMapping("/all")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> getAllUsers(Pageable pageable){
         return new ResponseEntity<>(new ApiResponse(true, "Query Results", userRepository.findAll(pageable)), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
@@ -121,6 +125,7 @@ public class AuthController {
     }
 
     @PutMapping("/ban")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> banUser(@Valid @RequestBody BanRequest request){
         User user = userRepository.findByUserName(request.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", request.getUsername()));
@@ -136,6 +141,7 @@ public class AuthController {
     }
 
     @PutMapping("/unban")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<?> unbanUser(@Valid @RequestBody BanRequest request){
         User user = userRepository.findByUserName(request.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", request.getUsername()));

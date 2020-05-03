@@ -46,11 +46,18 @@ export const registerAUser = (user) => (dispatch, getState) => {
   const body = JSON.stringify(user);
   axios
     .post(CREATE_A_USER_API, body, config)
-    .then(res =>
+    .then(res =>{
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
       })
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
     )
     .catch(err => {
       if (err.response !== undefined) {
@@ -76,7 +83,6 @@ export const adminUpdateUser = (user) => (dispatch, getState) => {
   }
   // Request body
   const body = JSON.stringify(user);
-  console.log(body)
   axios
     .put(ADMIN_UPDATE_USER_API, body, config)
     .then(res =>{

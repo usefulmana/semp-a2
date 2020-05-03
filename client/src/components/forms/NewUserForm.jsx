@@ -44,7 +44,8 @@ class NewUserForm extends Component {
     }
   }
 
-  handleAddUser = () => {
+  handleAddUser = (e) => {
+    e.preventDefault()
     const { name, email, password, retype, role } = this.state;
     if (password === retype) {
       const user = { name, email, password, role }
@@ -66,7 +67,7 @@ class NewUserForm extends Component {
           data-position="left">
           <i class="material-icons">add</i></button>
         <div id="modal-user" class="modal">
-          <form class="modal-content" id="user-form" onSubmit={this.handleAddUser}>
+          <form class="modal-content" id="user-form" onSubmit={this.handleAddUser.bind(this)}>
             <h4 className="center-align">Create A User</h4>
             {this.state.msg ? <div className="animated red-text shake center-align "> {this.state.msg}</div> : null}
 
