@@ -25,3 +25,23 @@ export const GET_DELETE_UPDATE_TOUR_BY_ID_API = `${ROOT_API}/tours/`
 export const UPDATE_TOUR_API = `${ROOT_API}/tours/update`
 export const ADD_REMOVE_LOC_FROM_TOUR_API = `${ROOT_API}/tours/loc?method=`
 export const ADD_REMOVE_TYPE_FROM_TOUR_API = `${ROOT_API}/tours/type?method=`
+
+
+export const getRequestConfig = () => {
+  const token = localStorage.getItem('accessToken');
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token;
+  }
+  return config;
+}
+
+
+export const addToArray = (arr, elem) => {
+  arr.push(elem)
+  return arr;
+}

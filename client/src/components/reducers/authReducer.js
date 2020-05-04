@@ -81,6 +81,7 @@ export default function (state = initialState, action) {
     }
     case UPDATE_FAIL:
     case LOGOUT_SUCCESS:
+      localStorage.removeItem('state')
       localStorage.removeItem('accessToken')
       return {
         ...state,

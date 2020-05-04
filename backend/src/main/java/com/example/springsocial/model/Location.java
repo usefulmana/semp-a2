@@ -40,8 +40,8 @@ public class Location {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "min_time_in_minute", nullable = false)
-    private int minTime;
+    @Column(name = "min_time_in_seconds", nullable = false)
+    private int minTime=0;
 
     @Column(name = "created_at", updatable = false)
     @CreatedDate

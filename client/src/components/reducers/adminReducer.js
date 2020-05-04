@@ -3,8 +3,11 @@ import { GET_ALL_USERS,
   UNBAN_USER,
   GET_USER_BY_ID,
   ADMIN_UPDATE_USER,
-  ADMIN_UPDATE_USER_FAIL
+  ADMIN_UPDATE_USER_FAIL,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL
 } from "../actions/types";
+import { addToArray } from "../common/routes";
 
 const initialState = {
   users: null,
@@ -18,6 +21,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         users: action.payload
+      }
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        users: addToArray(state.users, action.payload)
       }
     case GET_USER_BY_ID:
       return {

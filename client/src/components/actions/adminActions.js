@@ -10,21 +10,22 @@ import {
   ADMIN_UPDATE_USER,
   ADMIN_UPDATE_USER_FAIL
 } from './types';
-import { CREATE_A_USER_API, GET_ALL_USERS_API, GET_USER_BY_ID_API, BAN_USER_API, UNBAN_USER_API, ADMIN_UPDATE_USER_API } from './../common/routes';
+import {
+  CREATE_A_USER_API,
+  GET_ALL_USERS_API,
+  GET_USER_BY_ID_API,
+  BAN_USER_API,
+  UNBAN_USER_API,
+  ADMIN_UPDATE_USER_API,
+  getRequestConfig
+ } from './../common/routes';
 import Swal from 'sweetalert2';
 
 
-export const getUsers = () => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const getUsers = () => (dispatch) => {
+
   axios
-    .get(GET_ALL_USERS_API, config)
+    .get(GET_ALL_USERS_API, getRequestConfig())
     .then(res =>
       dispatch({
         type: GET_ALL_USERS,
@@ -32,20 +33,12 @@ export const getUsers = () => (dispatch, getState) => {
       }))
 }
 
-export const registerAUser = (user) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const registerAUser = (user) => (dispatch) => {
+
   // Request body
   const body = JSON.stringify(user);
   axios
-    .post(CREATE_A_USER_API, body, config)
+    .post(CREATE_A_USER_API, body, getRequestConfig())
     .then(res =>{
       dispatch({
         type: REGISTER_SUCCESS,
@@ -71,20 +64,12 @@ export const registerAUser = (user) => (dispatch, getState) => {
     });
 };
 
-export const adminUpdateUser = (user) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const adminUpdateUser = (user) => (dispatch) => {
+
   // Request body
   const body = JSON.stringify(user);
   axios
-    .put(ADMIN_UPDATE_USER_API, body, config)
+    .put(ADMIN_UPDATE_USER_API, body, getRequestConfig())
     .then(res =>{
       dispatch({
         type: ADMIN_UPDATE_USER,
@@ -110,18 +95,10 @@ export const adminUpdateUser = (user) => (dispatch, getState) => {
     // });
 };
 
-export const getUserById = (id) => (dispatch, getState) => {
-  const config = {
-    headers: {
-    }
-  };
-  const token = getState().auth.accessToken;
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const getUserById = (id) => (dispatch) => {
 
   axios
-    .get(GET_USER_BY_ID_API + id, config)
+    .get(GET_USER_BY_ID_API + id, getRequestConfig())
     .then(res => {
       dispatch({
         type: GET_USER_BY_ID,
@@ -137,22 +114,12 @@ export const getUserById = (id) => (dispatch, getState) => {
 
 }
 
-export const banAUser = (username) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const banAUser = (username) => (dispatch) => {
 
   const body = JSON.stringify({username})
   axios
-    .put(BAN_USER_API, body, config)
+    .put(BAN_USER_API, body, getRequestConfig())
     .then(res =>{
-      console.log(res)
       dispatch({
         type: BAN_USER
       })
@@ -162,20 +129,12 @@ export const banAUser = (username) => (dispatch, getState) => {
 }
 
 
-export const unbanAUser = (username) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const unbanAUser = (username) => (dispatch) => {
+
   const body = JSON.stringify({ username })
 
   axios
-    .put(UNBAN_USER_API, body, config)
+    .put(UNBAN_USER_API, body, getRequestConfig())
     .then(res =>
       dispatch({
         type: UNBAN_USER

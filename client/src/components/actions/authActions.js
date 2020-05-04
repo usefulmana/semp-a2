@@ -26,7 +26,8 @@ import {
   PW_RECOVERY_API,
   UPDATE_USER_API,
   PASSWORD_CHANGE_API,
-  GET_USER_BY_ID_API
+  GET_USER_BY_ID_API,
+  getRequestConfig
 } from './../common/routes';
 import Swal from 'sweetalert2';
 
@@ -62,7 +63,6 @@ export const login = ({ username, password }) => dispatch => {
 
 
 export const logout = () => {
-  localStorage.removeItem('state')
   return {
     type: LOGOUT_SUCCESS
   };
@@ -70,19 +70,10 @@ export const logout = () => {
 
 // Check token & load user
 
-export const loadUser = () => (dispatch, getState) => {
+export const loadUser = () => (dispatch) => {
   dispatch({ type: USER_LOADING });
-  const token = localStorage.getItem('accessToken');
-  const config = {
-    headers: {
-    }
-  };
 
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
-
-  axios.get(GET_CURRENT_USER_API, config)
+  axios.get(GET_CURRENT_USER_API, getRequestConfig())
     .then(res =>
       dispatch({
         type: USER_LOADED,
@@ -100,22 +91,12 @@ export const loadUser = () => (dispatch, getState) => {
 
 
 
-export const updateUser = ({ name, email }) => (dispatch, getState) => {
-
-  const config = {
-    headers: {
-      'content-type': 'application/json'
-    }
-  };
-  const token = getState().auth.accessToken;
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const updateUser = ({ name, email }) => (dispatch) => {
 
   const body = JSON.stringify({ name, email });
 
   axios
-    .put(UPDATE_USER_API, body, config)
+    .put(UPDATE_USER_API, body, getRequestConfig())
     .then(res =>{
       dispatch({
         type: UPDATE_SUCCESS,
@@ -197,21 +178,13 @@ export const recoverPassword = ({ token, password }) => dispatch => {
     });
 }
 
-export const changePassword = ({ oldpassword, newpassword }) => (dispatch, getState) => {
+export const changePassword = ({ oldpassword, newpassword }) => (dispatch) => {
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  const token = getState().auth.accessToken;
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+
   // Request body
   const body = JSON.stringify({ oldpassword, newpassword });
   axios
-    .post(PASSWORD_CHANGE_API, body, config)
+    .post(PASSWORD_CHANGE_API, body, getRequestConfig())
     .then(res =>
       dispatch({
         type: PASSWORD_CHANGED,

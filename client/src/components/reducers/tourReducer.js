@@ -14,6 +14,7 @@ import {
   GET_TOUR_BY_NAME,
   GET_TOUR_BY_NAME_FAIL
 } from './../actions/types';
+import { addToArray } from '../common/routes';
 
 const initialState = {
   tours: null,
@@ -36,7 +37,7 @@ export default function (state = initialState, action) {
     case ADD_TOUR:
       return {
         ...state,
-        tour: action.payload
+        tours: addToArray(state.tours, action.payload)
       }
     case DELETE_TOUR:
       const idToBeDeleted = action.payload

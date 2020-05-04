@@ -7,26 +7,21 @@ import {
   DELETE_LOCATION,
   ADD_LOCATION_FAIL,
   DELETE_LOCATION_FAIL,
-  GET_LOCATION_BY_ID_FAIL
+  GET_LOCATION_BY_ID_FAIL,
+  UPDATE_LOCATION,
+  UPDATE_LOCATION_FAIL
 } from './types'
 import {
   GET_DELETE_UPDATE_LOCATION_BY_ID_API,
-  GET_LOCATIONS_API
+  GET_LOCATIONS_API,
+  getRequestConfig
 } from '../common/routes';
 import Swal from 'sweetalert2';
 
 
-export const getLocations = () => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const getLocations = () => (dispatch) => {
   axios
-    .get(GET_LOCATIONS_API, config)
+    .get(GET_LOCATIONS_API, getRequestConfig())
     .then(res =>
       dispatch({
         type: GET_LOCATIONS,
@@ -34,18 +29,11 @@ export const getLocations = () => (dispatch, getState) => {
       }))
 }
 
-export const getLocationById = (id) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const getLocationById = (id) => (dispatch) => {
+
 
   axios
-    .get(GET_DELETE_UPDATE_LOCATION_BY_ID_API + id, config)
+    .get(GET_DELETE_UPDATE_LOCATION_BY_ID_API + id, getRequestConfig())
     .then(res =>{
       dispatch({
         type: GET_LOCATION_BY_ID,
@@ -54,28 +42,19 @@ export const getLocationById = (id) => (dispatch, getState) => {
     }
 
     )
-    .catch(err => {
-      dispatch(returnErrors(err.response.data.payload.message, err.response.status));
-      dispatch({
-        type: GET_LOCATION_BY_ID_FAIL
-      });
-    });
+    // .catch(err => {
+    //   dispatch(returnErrors(err.response.data.payload.message, err.response.status));
+    //   dispatch({
+    //     type: GET_LOCATION_BY_ID_FAIL
+    //   });
+    // });
 }
 
-export const createLocation = (location) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const createLocation = (location) => (dispatch) => {
 
   const body = JSON.stringify(location)
   axios
-    .post(GET_LOCATIONS_API, body, config)
+    .post(GET_LOCATIONS_API, body, getRequestConfig())
     .then(res =>{
       dispatch({
         type: ADD_LOCATION,
@@ -89,25 +68,45 @@ export const createLocation = (location) => (dispatch, getState) => {
       })
     }
     )
+    // .catch(err => {
+    //   dispatch(returnErrors(err.response.data.payload.message, err.response.status));
+    //   dispatch({
+    //     type: ADD_LOCATION_FAIL
+    //   });
+    // });
+}
+
+
+export const updateLocation = (location) => (dispatch) => {
+
+  const body = JSON.stringify(location)
+  axios
+    .put(GET_LOCATIONS_API, body, getRequestConfig())
+    .then(res => {
+      dispatch({
+        type: UPDATE_LOCATION,
+        payload: res.data.payload
+      })
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+    )
     .catch(err => {
       dispatch(returnErrors(err.response.data.payload.message, err.response.status));
       dispatch({
-        type: ADD_LOCATION_FAIL
+        type: UPDATE_LOCATION_FAIL
       });
     });
 }
 
-export const deleteLocationById = (id) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const deleteLocationById = (id) => (dispatch) => {
+
   axios
-    .delete(GET_DELETE_UPDATE_LOCATION_BY_ID_API + id, config)
+    .delete(GET_DELETE_UPDATE_LOCATION_BY_ID_API + id, getRequestConfig())
     .then(res =>{
       dispatch({
         type: DELETE_LOCATION,

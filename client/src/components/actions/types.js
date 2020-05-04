@@ -6,6 +6,7 @@ export const ADD_LOCATION_FAIL = 'ADD_LOCATION_FAIL';
 export const DELETE_LOCATION = 'DELETE_LOCATION';
 export const DELETE_LOCATION_FAIL = 'DELETE_LOCATION_FAIL';
 export const UPDATE_LOCATION = 'UPDATE_LOCATION';
+export const UPDATE_LOCATION_FAIL = 'UPDATE_LOCATION_FAIL';
 
 export const GET_TYPES = 'GET_TYPES';
 export const GET_TYPE_BY_ID = 'GET_TYPES_BY_ID';
@@ -15,6 +16,7 @@ export const ADD_TYPE_FAIL = 'ADD_TYPE_FAIL';
 export const DELETE_TYPE = 'DELETE_TYPE';
 export const DELETE_TYPE_FAIL = 'DELETE_TYPE_FAIL';
 export const UPDATE_TYPE = 'UPDATE_TYPE';
+export const UPDATE_TYPE_FAIL = 'UPDATE_TYPE_FAIL';
 
 export const GET_TOURS = 'GET_TOURS';
 export const GET_TOUR_BY_ID = 'GET_TOUR_BY_ID';

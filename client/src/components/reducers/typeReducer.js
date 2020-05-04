@@ -5,8 +5,11 @@ import {
   ADD_TYPE,
   ADD_TYPE_FAIL,
   DELETE_TYPE,
-  DELETE_TYPE_FAIL
+  DELETE_TYPE_FAIL,
+  UPDATE_TYPE,
+  UPDATE_TYPE_FAIL
 } from './../actions/types'
+import { addToArray } from '../common/routes';
 
 
 const initialState = {
@@ -31,6 +34,11 @@ export default function (state = initialState, action) {
     case ADD_TYPE:
       return {
         ...state,
+        types: addToArray(state.types, action.payload)
+      }
+    case UPDATE_TYPE:
+      return {
+        ...state,
         type: action.payload
       }
     case DELETE_TYPE:
@@ -39,6 +47,7 @@ export default function (state = initialState, action) {
         ...state,
         types: state.types.filter(item => item.id !== id)
       }
+    case UPDATE_TYPE_FAIL:
     case GET_TYPE_BY_ID_FAIL:
     case ADD_TYPE_FAIL:
     case DELETE_TYPE_FAIL:

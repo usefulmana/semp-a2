@@ -5,6 +5,7 @@ import com.example.springsocial.model.Tour;
 import com.example.springsocial.model.Type;
 import com.example.springsocial.payload.ApiResponse;
 import com.example.springsocial.payload.TypeRequest;
+import com.example.springsocial.payload.TypeUpdateRequest;
 import com.example.springsocial.repository.TourRepository;
 import com.example.springsocial.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -73,9 +73,13 @@ public class TypeController {
 
 
     // TODO Edit Functionality In Sprint II
-    @PutMapping("/{id}")
-    @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<?> updateAType(@PathVariable(name = "id") String id){
-        return null;
+    @PutMapping("")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<?> updateAType(@Valid @RequestBody TypeUpdateRequest request){
+        Type type = typeRepository.findById(request.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Type", "id", request.getId()));
+        type.setName(request.getName());
+        return new ResponseEntity<>(new ApiResponse(true, "Type Updated", typeRepository.save(type))
+                , HttpStatus.OK);
     }
 }

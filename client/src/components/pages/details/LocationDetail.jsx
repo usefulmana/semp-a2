@@ -3,7 +3,7 @@ import Navbar from './../../parts/Navbar';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min';
 import  Swal  from 'sweetalert2';
-import { deleteLocationById, getLocationById } from '../../actions/locationActions';
+import { deleteLocationById, getLocationById, updateLocation } from '../../actions/locationActions';
 import { Redirect } from 'react-router-dom';
 import Footer from '../../parts/Footer';
 import TourAdder from '../../parts/TourAdder';
@@ -33,14 +33,27 @@ class LocationDetail extends Component {
     var elems = document.querySelectorAll('.slider');
     M.Slider.init(elems);
 
+    setTimeout(() => {
+      if (this.props.loc.location !== null) {
+        this.setState({
+          id: this.props.loc.location.id,
+          name: this.props.loc.location.name,
+          description: this.props.loc.location.description,
+          x: this.props.loc.location.x,
+          y: this.props.loc.location.y,
+          minTime: this.props.loc.location.minTime
+        })
+      }
+    }, 1000)
+
   }
 
-  handleEdit(e) {
-    e.preventDefault()
-    Swal.fire({
-      icon: 'error',
-      title: 'This functionality has not yet been implemented!'
-    })
+  handleEdit() {
+    const {id, name , description, x , y, minTime} = this.state;
+
+    const body = {id, name , description, x , y, minTime}
+
+    this.props.updateLocation(body)
   }
 
   onChange(e) {
@@ -82,13 +95,13 @@ class LocationDetail extends Component {
           </ul>
         </div>
         <div>
-          <form onSubmit={this.handleEdit}>
+          <div>
 
             <div class="row">
               <div class="input-field col s3">
               </div>
               <div class="input-field col s6">
-                <input disabled name="name" id="name" type="text" className="validate" value={item.name} required />
+                <input name="name" id="name" type="text" className="validate" value={item.name} required onChange={this.onChange} />
                 <label className="active" for="name">Name</label>
               </div>
             </div>
@@ -97,16 +110,16 @@ class LocationDetail extends Component {
               <div class="input-field col s3">
               </div>
               <div class="input-field col s1">
-                <input disabled name="x" id="x" type="number" className="validate" value={item.x} required />
+                <input name="x" id="x" type="number" className="validate" value={item.x} required onChange={this.onChange}/>
                 <label className="active" for="name">X</label>
               </div>
               <div class="input-field col s1">
-                <input disabled name="y" id="y" type="number" className="validate" value={item.y} required />
+                <input name="y" id="y" type="number" className="validate" value={item.y} required onChange={this.onChange} />
                 <label className="active" for="name">Y</label>
               </div>
               <div class="input-field col s4">
-                <input disabled name="time" id="time" type="number" className="validate" value={item.minTime} required />
-                <label className="active" for="time">Minimum Time in Seconds</label>
+                <input name="minTime" id="minTime" type="number" className="validate" value={item.minTime} required onChange={this.onChange} />
+                <label className="active" for="minTime">Minimum Time in Seconds</label>
               </div>
             </div>
 
@@ -114,7 +127,7 @@ class LocationDetail extends Component {
               <div class="input-field col s3">
               </div>
               <div class="input-field col s6">
-                <textarea disabled id="description" className="materialize-textarea" value={item.description}></textarea>
+                <textarea id="description" name="description" className="materialize-textarea" value={item.description} onChange={this.onChange}></textarea>
                 <label className="active" for="description">Description</label>
               </div>
             </div>
@@ -139,11 +152,11 @@ class LocationDetail extends Component {
               <div className="center-align">
                 {/* <AddToTourForm target={item.id} timestamp={new Date().toString()}/> */}
                 {this.props.auth.user.role === "ROLE_USER" ? null :
-                  <button className="waves-effect waves-light btn" type="submit"><i class="material-icons right">send</i>Submit</button>
+                  <button className="waves-effect waves-light btn" type="submit" onClick={this.handleEdit.bind(this)}><i class="material-icons right">send</i>Submit</button>
                 }
               </div>
             </div>
-          </form>
+          </div>
           {this.props.auth.user.role === "ROLE_USER"? null :
 
               <Fragment>
@@ -167,7 +180,7 @@ class LocationDetail extends Component {
           <div className="divider"></div>
           <br />
           <div className="center-align">
-            {this.props.loc.location === null ? null : this.renderLogic(this.props.loc.location)}
+            {this.props.loc.location === null ? null : this.renderLogic(this.state)}
             <br/>
           </div>
         </div>
@@ -185,5 +198,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteLocationById, getLocationById}
+  { deleteLocationById, getLocationById, updateLocation}
 )(LocationDetail);

@@ -5,6 +5,7 @@ import com.example.springsocial.model.Location;
 import com.example.springsocial.model.Tour;
 import com.example.springsocial.payload.ApiResponse;
 import com.example.springsocial.payload.LocationRequest;
+import com.example.springsocial.payload.LocationUpdateRequest;
 import com.example.springsocial.repository.LocationRepository;
 import com.example.springsocial.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,10 +87,18 @@ public class LocationController {
     }
 
 
-    // TODO Edit Functionality In Sprint II
-    @PutMapping("/{id}")
+    // TODO Support Edit Photos Later
+    @PutMapping("")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<?> updateALocation(@PathVariable(name = "id") String id){
-        return null;
+    public ResponseEntity<?> updateALocation(@Valid @RequestBody LocationUpdateRequest request){
+        Location location = locationRepository.findById(request.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Location", "id", request.getId()));
+        location.setMinTime(request.getMinTime());
+        location.setDescription(request.getDescription());
+        location.setName(request.getName());
+        location.setX(Double.parseDouble(request.getX()));
+        location.setY(Double.parseDouble(request.getY()));
+        return new ResponseEntity<>(new ApiResponse(true, "Updated", locationRepository.save(location))
+                , HttpStatus.OK);
     }
 }

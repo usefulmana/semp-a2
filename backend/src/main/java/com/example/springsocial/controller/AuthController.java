@@ -94,9 +94,6 @@ public class AuthController {
 
         user.setProvider(AuthProvider.local);
 
-        // Comment out the below line when password checking is enabled
-        // user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-
         if (signUpRequest.getRole().equalsIgnoreCase("admin")){
             user.setUserName("a" + GeneralUtils.generateUsername());
             user.setRole(Role.ROLE_ADMIN);

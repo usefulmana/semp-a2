@@ -6,8 +6,11 @@ import {
   DELETE_LOCATION,
   ADD_LOCATION,
   ADD_LOCATION_FAIL,
-  DELETE_LOCATION_FAIL
+  DELETE_LOCATION_FAIL,
+  UPDATE_LOCATION,
+  UPDATE_LOCATION_FAIL
 } from '../actions/types';
+import { addToArray } from './../common/routes';
 
 const initialState = {
   locations: null,
@@ -31,7 +34,7 @@ export default function (state = initialState, action) {
     case ADD_LOCATION:
       return {
         ...state,
-        location: action.payload
+        locations: addToArray(state.locations, action.payload)
       }
     case DELETE_LOCATION:
       const idToBeDeleted = action.payload
@@ -39,6 +42,12 @@ export default function (state = initialState, action) {
         ...state,
         locations: state.locations.filter(item => item.id !== idToBeDeleted)
       }
+    case UPDATE_LOCATION:
+      return {
+        ...state,
+        location: action.payload
+      }
+    case UPDATE_LOCATION_FAIL:
     case ADD_LOCATION_FAIL:
     case DELETE_LOCATION_FAIL:
     case GET_LOCATION_BY_ID_FAIL:

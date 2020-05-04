@@ -26,23 +26,17 @@ import {
   ADD_REMOVE_TYPE_FROM_TOUR_API,
   ADD_REMOVE_LOC_FROM_TOUR_API,
   UPDATE_TOUR_API,
-  GET_TOURS_BY_NAME_API
+  GET_TOURS_BY_NAME_API,
+  getRequestConfig
 }
   from '../common/routes';
 import Swal from 'sweetalert2';
 
 
-export const getTours = () => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const getTours = () => (dispatch) => {
+
   axios
-    .get(GET_TOURS_API, config)
+    .get(GET_TOURS_API, getRequestConfig())
     .then(res =>
       dispatch({
         type: GET_TOURS,
@@ -50,18 +44,11 @@ export const getTours = () => (dispatch, getState) => {
       }))
 }
 
-export const getTourById = (id) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const getTourById = (id) => (dispatch) => {
+
 
   axios
-    .get(GET_DELETE_UPDATE_TOUR_BY_ID_API + id, config)
+    .get(GET_DELETE_UPDATE_TOUR_BY_ID_API + id, getRequestConfig())
     .then (res => {
       dispatch({
         type: GET_TOUR_BY_ID,
@@ -70,18 +57,10 @@ export const getTourById = (id) => (dispatch, getState) => {
     })
 }
 
-export const getToursByName = (name) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const getToursByName = (name) => (dispatch) => {
 
   axios
-    .get(GET_TOURS_BY_NAME_API + name, config)
+    .get(GET_TOURS_BY_NAME_API + name, getRequestConfig())
     .then(res => {
       dispatch({
         type: GET_TOUR_BY_NAME,
@@ -96,20 +75,12 @@ export const getToursByName = (name) => (dispatch, getState) => {
     });
 }
 
-export const createTour = (tour) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const createTour = (tour) => (dispatch) => {
+
 
   const body = JSON.stringify(tour)
   axios
-    .post(GET_TOURS_API, body, config)
+    .post(GET_TOURS_API, body, getRequestConfig())
     .then(res =>{
       dispatch({
         type: ADD_TOUR,
@@ -124,25 +95,18 @@ export const createTour = (tour) => (dispatch, getState) => {
     }
 
     )
-    .catch(err => {
-      dispatch(returnErrors(err.response.data.payload.message, err.response.status));
-      dispatch({
-        type: ADD_TOUR_FAIL
-      });
-    });
+    // .catch(err => {
+    //   dispatch(returnErrors(err.response.data.payload.message, err.response.status));
+    //   dispatch({
+    //     type: ADD_TOUR_FAIL
+    //   });
+    // });
 }
 
-export const deleteTourById = (id) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const deleteTourById = (id) => (dispatch) => {
+
   axios
-    .delete(GET_DELETE_UPDATE_TOUR_BY_ID_API + id, config)
+    .delete(GET_DELETE_UPDATE_TOUR_BY_ID_API + id, getRequestConfig())
     .then(res =>
       dispatch({
         type: DELETE_TOUR,
@@ -157,19 +121,11 @@ export const deleteTourById = (id) => (dispatch, getState) => {
   // });
 }
 
-export const updateTour = (tour) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const updateTour = (tour) => (dispatch) => {
+
   const body = JSON.stringify(tour)
   axios
-    .put(UPDATE_TOUR_API, body, config)
+    .put(UPDATE_TOUR_API, body, getRequestConfig())
     .then(res =>{
       dispatch({
         type: UPDATE_TOUR,
@@ -191,21 +147,12 @@ export const updateTour = (tour) => (dispatch, getState) => {
   });
 }
 
-export const addRemoveLocToTour = (tour_id, loc_id, method) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const addRemoveLocToTour = (tour_id, loc_id, method) => (dispatch) => {
 
   const body = JSON.stringify({ tour_id, loc_id })
   if (method === "remove") {
     axios
-      .patch(ADD_REMOVE_LOC_FROM_TOUR_API + method, body, config)
+      .patch(ADD_REMOVE_LOC_FROM_TOUR_API + method, body, getRequestConfig())
       .then(res => {
         dispatch({
           type: REMOVE_LOC_TO_TOUR,
@@ -229,7 +176,7 @@ export const addRemoveLocToTour = (tour_id, loc_id, method) => (dispatch, getSta
   }
   else if (method === "add") {
     axios
-      .patch(ADD_REMOVE_LOC_FROM_TOUR_API + method, body, config)
+      .patch(ADD_REMOVE_LOC_FROM_TOUR_API + method, body, getRequestConfig())
       .then(res => {
         dispatch({
           type: ADD_LOC_TO_TOUR,
@@ -245,7 +192,6 @@ export const addRemoveLocToTour = (tour_id, loc_id, method) => (dispatch, getSta
 
       )
       .catch(err => {
-        console.log(err.response)
         dispatch(returnErrors(err.response.data.message, err.response.status));
         dispatch({
           type: ADD_LOC_TO_TOUR_FAIL
@@ -255,22 +201,14 @@ export const addRemoveLocToTour = (tour_id, loc_id, method) => (dispatch, getSta
 }
 
 
-export const addRemoveTypeToTour = (tour_id, type_id, method) => (dispatch, getState) => {
-  const token = getState().auth.accessToken;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token;
-  }
+export const addRemoveTypeToTour = (tour_id, type_id, method) => (dispatch) => {
+
 
   const body = { tour_id, type_id }
 
   if (method === "remove") {
     axios
-      .patch(ADD_REMOVE_TYPE_FROM_TOUR_API + method, body, config)
+      .patch(ADD_REMOVE_TYPE_FROM_TOUR_API + method, body, getRequestConfig())
       .then(res => {
         dispatch({
           type: REMOVE_TYPE_TO_TOUR,
@@ -294,7 +232,7 @@ export const addRemoveTypeToTour = (tour_id, type_id, method) => (dispatch, getS
   }
   else if (method === "add") {
     axios
-      .patch(ADD_REMOVE_TYPE_FROM_TOUR_API + method, body, config)
+      .patch(ADD_REMOVE_TYPE_FROM_TOUR_API + method, body, getRequestConfig())
       .then(res => {
         dispatch({
           type: ADD_TYPE_TO_TOUR,
