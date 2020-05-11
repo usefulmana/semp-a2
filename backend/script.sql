@@ -1,6 +1,15 @@
+drop table if exists `locations`;
+drop table if exists `location_pics`;
+drop table if exists `tours`;
+drop table if exists `tours_locations`;
+drop table if exists `types`;
+drop table if exists `tours_types`;
+drop table if exists `users`;
+drop table if exists `tokens`;
+
 create table locations
 (
-    id                  varchar(255) not null
+    id                  varchar(30) not null
         primary key,
     created_at          datetime     null,
     created_by          varchar(255) null,
@@ -15,7 +24,7 @@ create table locations
 
 create table location_pics
 (
-    location_id varchar(255) not null,
+    location_id varchar(30) not null,
     pics        varchar(255) null,
     constraint FK2ek2w77w2j9fqwp6gqne3gsav
         foreign key (location_id) references locations (id)
@@ -23,7 +32,7 @@ create table location_pics
 
 create table tours
 (
-    id              varchar(255) not null
+    id              varchar(30) not null
         primary key,
     created_at      datetime     null,
     created_by      varchar(255) null,
@@ -37,8 +46,8 @@ create table tours
 
 create table tours_locations
 (
-    tour_id      varchar(255) not null,
-    locations_id varchar(255) not null,
+    tour_id      varchar(30) not null,
+    locations_id varchar(30) not null,
     constraint FKhls9xhfj7jg7r7c1ei954cn9u
         foreign key (locations_id) references locations (id),
     constraint FKljrcpb9rrvl1bp8oepq3m8bte
@@ -47,7 +56,7 @@ create table tours_locations
 
 create table types
 (
-    id              varchar(255) not null
+    id              varchar(30) not null
         primary key,
     created_at      datetime     null,
     created_by      varchar(255) null,
@@ -58,8 +67,8 @@ create table types
 
 create table tours_types
 (
-    tour_id  varchar(255) not null,
-    types_id varchar(255) not null,
+    tour_id  varchar(30) not null,
+    types_id varchar(30) not null,
     primary key (tour_id, types_id),
     constraint FK30rcwnk093svqrlt60eiaehis
         foreign key (tour_id) references tours (id),
@@ -69,7 +78,7 @@ create table tours_types
 
 create table users
 (
-    id              varchar(255) not null
+    id              varchar(30) not null
         primary key,
     created_at      datetime     null,
     created_by      varchar(255) null,
@@ -93,7 +102,7 @@ create table users
 
 create table tokens
 (
-    id             varchar(255) not null
+    id             varchar(30) not null
         primary key,
     confirmed_date datetime     null,
     expired_date   datetime     null,
