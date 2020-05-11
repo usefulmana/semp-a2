@@ -1,4 +1,4 @@
-export const ROOT_API = 'http://localhost:8080'
+export const ROOT_API = 'http://ec2-54-251-169-63.ap-southeast-1.compute.amazonaws.com:8080'
 
 export const LOGIN_API = `${ROOT_API}/auth/login`
 export const CREATE_A_USER_API = `${ROOT_API}/auth/signup`
