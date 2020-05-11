@@ -31,14 +31,14 @@ public class EmailSenderService {
         javaMailSender.send(email);
     }
 
-    public void sendSimpleMessage(Email mail) throws MessagingException, IOException {
+    public void sendSimpleMessage(Email mail, String template) throws MessagingException, IOException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name());
         Context context = new Context();
         context.setVariables(mail.getModel());
-        String html = templateEngine.process("token-email", context);
+        String html = templateEngine.process(template, context);
 
         helper.setTo(mail.getTo());
         helper.setText(html, true);

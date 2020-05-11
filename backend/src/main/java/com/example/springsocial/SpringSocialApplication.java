@@ -27,7 +27,7 @@ public class SpringSocialApplication {
 	@Bean
 	CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder encoder){
 		return args -> {
-			Optional<User> user = userRepository.findByEmail("admin@gmail.com");
+			Optional<User> user = userRepository.findByEmail("nlbasni2010@gmail.com");
 			if (!user.isPresent()){
 				User admin = new User();
 				admin.setName("Le Admin");

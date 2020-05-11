@@ -163,7 +163,6 @@ public class UserController {
 
     private void sendEmailWithToken(User user, ConfirmationToken token) throws IOException, MessagingException {
         Email mail = new Email();
-        System.out.println(getHostEmail());
         mail.setFrom(getHostEmail());
         mail.setTo(user.getEmail());
         if (token.getType().equals(Token.PW_RECOVERY)){
@@ -177,7 +176,7 @@ public class UserController {
         model.put("verification_url", String.format("http://localhost:3000/recover/%s", token.getToken()));
         mail.setModel(model);
         // TODO Remove This The Comment Bracket in Prod
-        // emailSenderService.sendSimpleMessage(mail);
+        // emailSenderService.sendSimpleMessage(mail, "token-email");
     }
 
     private String validateToken(String token){

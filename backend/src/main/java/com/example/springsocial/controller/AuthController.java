@@ -2,14 +2,15 @@ package com.example.springsocial.controller;
 
 import com.example.springsocial.exception.BadRequestException;
 import com.example.springsocial.exception.ResourceNotFoundException;
-import com.example.springsocial.model.AuthProvider;
-import com.example.springsocial.model.Role;
-import com.example.springsocial.model.User;
+import com.example.springsocial.model.*;
 import com.example.springsocial.payload.*;
 import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.TokenProvider;
+import com.example.springsocial.service.EmailSenderService;
 import com.example.springsocial.util.GeneralUtils;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
+import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +42,9 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -43,8 +53,12 @@ public class AuthController {
     @Autowired
     private TokenProvider tokenProvider;
 
+    @Value("${spring.mail.username}")
+    @Getter
+    private String hostEmail;
+
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws IOException, MessagingException {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -57,6 +71,7 @@ public class AuthController {
         Optional<User> user = userRepository.findByUserName(loginRequest.getUsername());
         String token = tokenProvider.createToken(authentication);
         if (user.isPresent()){
+            sendLoginNotifEmail(user.get());
             return ResponseEntity.ok(new AuthResponse(token, user.get()));
         }
         return new ResponseEntity<>(new ApiResponse(false, "No such User exists"), HttpStatus.BAD_REQUEST);
@@ -151,5 +166,17 @@ public class AuthController {
         }
         return new ResponseEntity<>(new ApiResponse(false, "User " + request.getUsername() + " is not banned")
                 , HttpStatus.BAD_REQUEST);
+    }
+
+    private void sendLoginNotifEmail(User user) throws IOException, MessagingException {
+        Email mail = new Email();
+        mail.setFrom(getHostEmail());
+        mail.setTo(user.getEmail());
+        mail.setSubject("Someone just logged in to M with your account");
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("verification_url", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MMM-yy HH:mm:ss")));
+        mail.setModel(model);
+        emailSenderService.sendSimpleMessage(mail, "login-notif");
     }
 }
