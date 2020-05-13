@@ -6,6 +6,7 @@ import DeleteButton from '../parts/DeleteButton';
 import AddButton from '../parts/AddButton';
 import { Link } from 'react-router-dom';
 import TourAdder from '../parts/TourAdder';
+import DuplicateButton from '../parts/DuplicateButton';
 
 class Locations extends Component {
 
@@ -61,8 +62,12 @@ class Locations extends Component {
             </Link>
               <div className="card-action">
                   <div className="right-align">
-                  <TourAdder item={loc} />
-                  <DeleteButton id={loc.id} />
+                  <button className="btn dropdown-trigger" data-target="dropdown1">Action(s)</button>
+                  <ul id='dropdown1' className='dropdown-content'>
+                    <li><DeleteButton id={loc.id} /></li>
+                    <li><DuplicateButton item={loc} /></li>
+                    <li><TourAdder item={loc} /></li>
+                  </ul>
                   </div>
               </div>
             </div>

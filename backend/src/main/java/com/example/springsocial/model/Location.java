@@ -41,11 +41,11 @@ public class Location {
     private String description;
 
     @Column(name = "min_time_in_seconds", nullable = false)
-    private int minTime=0;
+    private int minTime = 0;
 
     @Column(name = "created_at", updatable = false)
     @CreatedDate
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @Column(name = "created_by")
@@ -54,7 +54,7 @@ public class Location {
 
     @Column(name = "last_updated")
     @LastModifiedDate
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime lastUpdated;
 
     @Column(name = "last_updated_by")
