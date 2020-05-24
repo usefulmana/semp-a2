@@ -1,9 +1,4 @@
 
 
-var obj = {
-  name: "Jefdas",
-  houses: [{ name: 2 }, { name: 5 }, { name: 10 }]
-}
-
-
-console.log(obj.houses.filter(e => e.name > 2))
+var test = [{"id": "2"}]
+console.log(test[0].id)

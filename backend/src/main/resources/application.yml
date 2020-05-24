@@ -1,7 +1,7 @@
 
 spring:
     datasource:
-        url: jdbc:mariadb://76u62o.stackhero-network.com:3306/dev
+        url: jdbc:mariadb://localhost:3306/dev
         username: pi
         password: GAtech321
         driver-class-name: org.mariadb.jdbc.Driver
@@ -67,3 +67,9 @@ app:
       - myandroidapp://oauth2/redirect
       - myiosapp://oauth2/redirect
 debug: true
+
+cloudinary:
+  default_avatar: https://materializecss.com/images/yuna.jpg
+  cloud_name: dica8rimp
+  api_key: 532121289778131
+  api_secret: BrJhEbXCeOTjemd3BeyIVWVLwH0

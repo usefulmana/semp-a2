@@ -48,11 +48,10 @@ class Types extends Component {
           }}>{t.name}</Link>
         </td>
         <td>
-          <button className="btn dropdown-trigger" data-target="dropdown1">Action(s)</button>
-          <ul id='dropdown1' className='dropdown-content'>
-            <li><DeleteButton id={t.id} /></li>
-            <li><TourAdder item={t} /></li>
-          </ul>
+
+            <DeleteButton id={t.id} />
+            <TourAdder item={t} />
+
         </td>
       </tr>
     )
@@ -72,9 +71,9 @@ class Types extends Component {
               </div>
             </Link>
             <div class="card-action">
-              <div className="right-align">
+              <div className="center-align">
+                <DeleteButton id={t.id} />
                 <TourAdder item={t} />
-                <DeleteButton id={t.id}/>
               </div>
             </div>
           </div>

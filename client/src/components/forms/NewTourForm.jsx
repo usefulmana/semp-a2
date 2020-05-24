@@ -31,7 +31,7 @@ class NewTourForm extends Component {
     this.setState({
       msg: ""
     })
-    document.getElementById("tour-form").value = "";
+    document.getElementById("tour-form").reset();
   }
 
   onChange = (e) => {

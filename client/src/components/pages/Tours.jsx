@@ -100,28 +100,28 @@ class Tours extends Component {
 
   cardView(loc) {
     return (
-      <div class="col s12 m6 l6">
-        <div class="card horizontal hoverable">
-          <div class="card-image">
-            <img src="https://lorempixel.com/100/190/nature/6" />
-          </div>
-          <div class="card-stacked">
+      <div class="col s12 m4 l4">
+        <div class="card">
+
             <Link to={{
               pathname: `/tour/${loc.id}`,
             }}>
+            <div className="card-image">
+              <img src="https://picsum.photos/seed/picsum/100/210" width="455" height="270" />
+              <span class="card-title">{loc.name}</span>
+            </div>
               <div class="card-content">
-                <div className="card-title">{loc.name}</div>
                 <p className="truncate">{loc.description}</p>
               </div>
             </Link>
 
             <div class="card-action">
-              <div className="right-align">
+              <div className="center-align">
                 <DeleteButton id={loc.id} />
               </div>
             </div>
           </div>
-        </div>
+
       </div>
     )
   }

@@ -8,9 +8,11 @@ import { GET_ALL_USERS,
   REGISTER_FAIL
 } from "../actions/types";
 import { addToArray } from "../common/routes";
+import { GET_ALL_LOGGED_IN_USERS } from './../actions/types';
 
 const initialState = {
   users: null,
+  loggedInUsers: null,
   user: null
 };
 
@@ -21,6 +23,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         users: action.payload
+      }
+    case GET_ALL_LOGGED_IN_USERS:
+      return {
+        ...state,
+        loggedInUsers: action.payload.payload
       }
     case REGISTER_SUCCESS:
       return {

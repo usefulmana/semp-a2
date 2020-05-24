@@ -30,7 +30,7 @@ class NewTypeForm extends Component {
     this.setState({
       msg: ""
     })
-    document.getElementById("type-form").value="";
+    document.getElementById("type-form").reset();
   }
 
   onChange = (e) => {

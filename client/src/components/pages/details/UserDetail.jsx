@@ -27,15 +27,18 @@ class UserDetail extends Component {
 
   componentDidMount() {
     this.props.getUserById(this.props.match.params.id)
-    if (this.props.admin.user !== null){
-      this.setState({
-        name: this.props.admin.user.name,
-        email: this.props.admin.user.email,
-        userName: this.props.admin.user.userName,
-        role: this.props.admin.user.role,
-        isActive: this.props.admin.user.isActive,
-      })
-    }
+    setTimeout(() => {
+      if (this.props.admin.user !== null) {
+        this.setState({
+          name: this.props.admin.user.name,
+          email: this.props.admin.user.email,
+          userName: this.props.admin.user.userName,
+          role: this.props.admin.user.role,
+          isActive: this.props.admin.user.isActive,
+        })
+      }
+    }, 1000)
+
   }
 
   handleUpdateUser = (e) => {

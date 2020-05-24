@@ -4,6 +4,7 @@ import com.example.springsocial.exception.BadRequestException;
 import com.example.springsocial.exception.ResourceNotFoundException;
 import com.example.springsocial.model.*;
 import com.example.springsocial.payload.*;
+import com.example.springsocial.repository.LoggedUserRepo;
 import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.TokenProvider;
 import com.example.springsocial.service.EmailSenderService;
@@ -30,9 +31,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,6 +42,9 @@ public class AuthController {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private LoggedUserRepo loggedUserRepo;
 
     @Autowired
     private UserRepository userRepository;
@@ -69,11 +71,27 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Optional<User> user = userRepository.findByUserName(loginRequest.getUsername());
+
+        Optional<LoggedUser> optionalLoggedUser = loggedUserRepo.findByUserName(loginRequest.getUsername());
+
         String token = tokenProvider.createToken(authentication);
+        if (optionalLoggedUser.isPresent()){
+            LoggedUser loggedUser = optionalLoggedUser.get();
+            loggedUser.setLastLoggedIn(LocalDateTime.now());
+            loggedUserRepo.save(loggedUser);
+        }
+        else {
+            LoggedUser loggedUser = new LoggedUser();
+            loggedUser.setUserName(loginRequest.getUsername());
+            loggedUser.setUserEmail(user.get().getEmail());
+            loggedUserRepo.save(loggedUser);
+        }
+
         if (user.isPresent()){
             sendLoginNotifEmail(user.get());
             return ResponseEntity.ok(new AuthResponse(token, user.get()));
         }
+
         return new ResponseEntity<>(new ApiResponse(false, "No such User exists"), HttpStatus.BAD_REQUEST);
     }
 
@@ -104,7 +122,6 @@ public class AuthController {
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
 
-        // TODO: Change Default Image URL
         user.setImageUrl(signUpRequest.getImageUrl());
 
         user.setProvider(AuthProvider.local);
@@ -166,6 +183,24 @@ public class AuthController {
         }
         return new ResponseEntity<>(new ApiResponse(false, "User " + request.getUsername() + " is not banned")
                 , HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/loggedIn")
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<?> getAllLoggedInUser(){
+        List<LoggedUser> users = loggedUserRepo.findAll();
+        List<LoggedUser> results = new ArrayList<>();
+
+        for (LoggedUser user: users){
+            if (user.getLastLoggedIn().getDayOfYear() == LocalDateTime.now().getDayOfYear()){
+                results.add(user);
+            }
+            else {
+                loggedUserRepo.delete(user);
+            }
+        }
+
+        return new ResponseEntity<>(new ApiResponse(true,"Success", results), HttpStatus.OK);
     }
 
     private void sendLoginNotifEmail(User user) throws IOException, MessagingException {

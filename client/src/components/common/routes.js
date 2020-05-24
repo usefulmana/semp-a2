@@ -1,4 +1,5 @@
-export const ROOT_API = 'http://ec2-54-251-169-63.ap-southeast-1.compute.amazonaws.com:8080'
+// export const ROOT_API = 'http://ec2-54-251-169-63.ap-southeast-1.compute.amazonaws.com:8080'
+export const ROOT_API = 'http://localhost:8080'
 
 export const LOGIN_API = `${ROOT_API}/auth/login`
 export const CREATE_A_USER_API = `${ROOT_API}/auth/signup`
@@ -12,9 +13,12 @@ export const PASSWORD_CHANGE_API = `${ROOT_API}/user/pw/to`
 export const BAN_USER_API = `${ROOT_API}/auth/ban`
 export const UNBAN_USER_API = `${ROOT_API}/auth/unban`
 export const GET_USER_BY_ID_API = `${ROOT_API}/auth/user/`
+export const UPLOAD_PROFILE_PIC_API = `${ROOT_API}/photo/profile`
+export const GET_ALL_LOGGED_IN_USERS_API = `${ROOT_API}/auth/loggedIn`
 
 export const GET_LOCATIONS_API = `${ROOT_API}/loc`
 export const GET_DELETE_UPDATE_LOCATION_BY_ID_API = `${ROOT_API}/loc/`
+export const UPLOAD_LOCATION_PIC_API = `${ROOT_API}/photo/loc`
 
 export const GET_TYPES_API = `${ROOT_API}/types`
 export const GET_DELETE_UPDATE_TYPE_BY_ID_API = `${ROOT_API}/types/`

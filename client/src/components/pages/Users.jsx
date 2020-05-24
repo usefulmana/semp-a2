@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import Navbar from './../parts/Navbar';
-import { getUsers } from './../actions/adminActions';
+import { getUsers, getAllLoggedInUsers } from './../actions/adminActions';
 import AddButton from '../parts/AddButton'
 import { Link } from 'react-router-dom';
 import BanUser from '../parts/BanUser';
@@ -9,6 +9,7 @@ import BanUser from '../parts/BanUser';
 class Users extends Component {
   componentDidMount() {
     this.props.getUsers();
+    this.props.getAllLoggedInUsers()
   }
 
   tableView(loc) {
@@ -88,6 +89,42 @@ class Users extends Component {
     }
   }
 
+  displayAccessLog(users){
+    return(
+      <Fragment>
+        <button className=" btn-small modal-trigger" href="#modal-daily">Daily Access Log</button>
+        <div id="modal-daily" className="modal">
+
+          <h2 className="center-align">Daily Access Log</h2>
+          <div className="divider"></div>
+          <br />
+          <div>
+            <table className="highlight centered">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Username</th>
+                  <th>Last Logged In</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.props.admin.loggedInUsers === null ? null : this.props.admin.loggedInUsers.map(u => (
+                  <Fragment>
+                    <tr>
+                      <td>{u.userEmail}</td>
+                      <td>{u.userName}</td>
+                      <td>{u.lastLoggedIn}</td>
+                    </tr>
+                  </Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Fragment>
+    )
+  }
+
   render() {
     return (
       <div>
@@ -96,6 +133,10 @@ class Users extends Component {
           <h1 className="teal-text">User Management</h1>
           <div className="divider"></div>
           <br />
+          <div className="center-align">
+            {this.displayAccessLog()}
+          </div>
+          <br/>
           <div className="row">
             {this.renderLogic()}
           </div>
@@ -116,5 +157,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getUsers }
+  { getUsers, getAllLoggedInUsers }
 )(Users);

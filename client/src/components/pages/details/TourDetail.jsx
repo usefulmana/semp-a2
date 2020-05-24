@@ -32,11 +32,11 @@ class TourDetail extends Component {
 
 
   componentDidMount() {
-    var box = document.querySelectorAll('.materialboxed');
-    M.Materialbox.init(box);
-    var elems = document.querySelectorAll('.slider');
-    M.Slider.init(elems);
-    M.AutoInit()
+    // var box = document.querySelectorAll('.materialboxed');
+    // M.Materialbox.init(box);
+    // var elems = document.querySelectorAll('.slider');
+    // M.Slider.init(elems);
+    // M.AutoInit()
     this.props.getLocations()
     this.props.getTypes()
     this.props.getTourById(this.props.match.params.id)
@@ -241,11 +241,26 @@ class TourDetail extends Component {
   renderLogic = (item) => {
     return (
       <Fragment>
-        <div className="slider">
-          <ul className="slides">
-            <li><img src="https://i.picsum.photos/id/104/1920/1080.jpg" className="materialboxed" /></li>
-          </ul>
+        {/* <div className="slider">
+        <div className="row">
+            <div class="input-field col s2">
+            </div>
+            <div class="input-field col s8">
+              <ul className="slides">
+
+                {item.locations.map(loc => (
+                  <Fragment>
+                    <li><img src={loc.pic} className="materialboxed" /></li>
+                  </Fragment>
+                ))}
+
+              </ul>
+            </div>
+            <div class="input-field col s2">
+            </div>
         </div>
+        </div> */}
+
         <div>
           <div>
 

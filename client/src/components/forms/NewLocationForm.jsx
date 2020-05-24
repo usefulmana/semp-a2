@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import { createLocation } from './../actions/locationActions';
+import { createLocation, uploadLocationPic } from './../actions/locationActions';
 
 class NewLocationForm extends Component {
   constructor(props) {
@@ -11,12 +11,13 @@ class NewLocationForm extends Component {
       y: '',
       minTime: '',
       description: '',
-      msg: ''
+      msg: '',
+      file: null
     })
 
     this.onChange = this.onChange.bind(this)
     this.resetForm = this.resetForm.bind(this)
-    this.onClick = this.onClick.bind(this)
+    this.handleFileChange = this.handleFileChange.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -32,9 +33,11 @@ class NewLocationForm extends Component {
     }
   }
 
-  onClick = (e) => {
+  handleFileChange = (e) => {
     e.preventDefault()
-    window.alert("This functionality has not yet been implemented. We are sorry for the inconvenience!")
+    this.setState({
+      file: e.target.files[0]
+    })
   }
 
   onChange = (e) => {
@@ -47,14 +50,18 @@ class NewLocationForm extends Component {
     this.setState({
       msg: ""
     })
-    document.getElementById("location-form").value="";
+    document.getElementById("location-form").reset();
   }
 
   handleAddLocation = (e) => {
     e.preventDefault()
+
     const { name, x, y, minTime, description } = this.state;
     const location = { name, x, y, minTime, description };
-    this.props.createLocation(location)
+    this.props.createLocation(location, this.state.file)
+    if (this.state.file != null){
+
+    }
   }
 
   render() {
@@ -102,7 +109,7 @@ class NewLocationForm extends Component {
               </div>
             </div>
 
-            <div className="row">
+            {/* <div className="row">
               <div class="input-field col s3">
               </div>
               <div class="file-field input-field col s6">
@@ -116,7 +123,7 @@ class NewLocationForm extends Component {
               </div>
               <div class="input-field col s3">
               </div>
-            </div>
+            </div> */}
 
             <div className="row">
               <div className="center-align">
@@ -126,6 +133,7 @@ class NewLocationForm extends Component {
             </div>
 
           </form>
+
           <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
           </div>

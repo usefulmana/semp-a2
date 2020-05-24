@@ -14,7 +14,8 @@ import {
 import {
   GET_DELETE_UPDATE_LOCATION_BY_ID_API,
   GET_LOCATIONS_API,
-  getRequestConfig
+  getRequestConfig,
+  UPLOAD_LOCATION_PIC_API
 } from '../common/routes';
 import Swal from 'sweetalert2';
 
@@ -48,6 +49,16 @@ export const getLocationById = (id) => (dispatch) => {
     //     type: GET_LOCATION_BY_ID_FAIL
     //   });
     // });
+}
+
+export const uploadLocationPic = (pic, id) => (dispatch) => {
+  const token = localStorage.getItem('accessToken');
+  axios({
+    method: 'post',
+    url: `${UPLOAD_LOCATION_PIC_API}?l_id=${id}`,
+    data: pic,
+    headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${token}` }
+  })
 }
 
 export const createLocation = (location) => (dispatch) => {

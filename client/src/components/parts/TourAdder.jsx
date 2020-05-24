@@ -79,7 +79,7 @@ class TourAdder extends Component {
     if (url.includes('locations')){
       return (
         <Fragment>
-          <button className="btn-flat btn-small tooltipped modal-trigger" href="#modal-addloc" data-position="left" data-tooltip="Add to A Tour"><i className="material-icons inline-icon green-text hvr-float">add</i></button>
+          <button className="btn-flat btn-small tooltipped modal-trigger  green-text" href="#modal-addloc" data-position="top" data-tooltip="Add to A Tour">Tour+</button>
           <div id="modal-addloc" className="modal">
             <form class="modal-content" onSubmit={this.handleAddLocationToTour}>
               {this.state.msg ? <div className="animated red-text shake center-align "> {this.state.msg}</div> : null}
@@ -106,7 +106,7 @@ class TourAdder extends Component {
     if (url.includes('types')) {
       return (
         <Fragment>
-          <button className="btn-flat btn-small tooltipped modal-trigger" href="#modal-addloc" data-tooltip="Add to A Tour"><i className="material-icons inline-icon green-text hvr-float">add</i></button>
+          <button className="btn-flat btn-small tooltipped modal-trigger green-text" href="#modal-addloc" data-tooltip="Add to A Tour">Tour+</button>
           <div id="modal-addloc" className="modal">
             <form class="modal-content" onSubmit={this.handleAddTypeToTour}>
               {this.state.msg ? <div className="animated red-text shake center-align "> {this.state.msg}</div> : null}

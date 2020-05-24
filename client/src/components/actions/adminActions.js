@@ -8,7 +8,8 @@ import {
   UNBAN_USER,
   GET_USER_BY_ID,
   ADMIN_UPDATE_USER,
-  ADMIN_UPDATE_USER_FAIL
+  ADMIN_UPDATE_USER_FAIL,
+  GET_ALL_LOGGED_IN_USERS
 } from './types';
 import {
   CREATE_A_USER_API,
@@ -17,7 +18,9 @@ import {
   BAN_USER_API,
   UNBAN_USER_API,
   ADMIN_UPDATE_USER_API,
-  getRequestConfig
+  UPLOAD_PROFILE_PIC_API,
+  getRequestConfig,
+  GET_ALL_LOGGED_IN_USERS_API
  } from './../common/routes';
 import Swal from 'sweetalert2';
 
@@ -50,6 +53,7 @@ export const registerAUser = (user) => (dispatch) => {
         showConfirmButton: false,
         timer: 1500
       })
+      setTimeout(window.location.reload.bind(window.location), 2000);
     }
     )
     .catch(err => {
@@ -63,6 +67,27 @@ export const registerAUser = (user) => (dispatch) => {
       }
     });
 };
+
+export const getAllLoggedInUsers = () => (dispatch) => {
+  axios
+  .get(GET_ALL_LOGGED_IN_USERS_API, getRequestConfig())
+  .then(res => {
+    dispatch({
+      type: GET_ALL_LOGGED_IN_USERS,
+      payload: res.data
+    })
+  })
+}
+
+export const uploadProfilePic = (pic) => (dispatch) => {
+  const token = localStorage.getItem('accessToken');
+  axios({
+    method: 'post',
+    url: UPLOAD_PROFILE_PIC_API,
+    data: pic,
+    headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${token}` }
+  })
+}
 
 export const adminUpdateUser = (user) => (dispatch) => {
 

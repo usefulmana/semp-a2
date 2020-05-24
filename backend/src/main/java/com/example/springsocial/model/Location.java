@@ -11,7 +11,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
 
 @Entity
 @Table(name = "locations")
@@ -26,10 +25,9 @@ public class Location {
     @Column(name = "name", nullable = false)
     private String name;
 
-    // TODO Find Ways To Upload Images
-    @Column(name = "pics")
-    @ElementCollection
-    private List<String> pics = new ArrayList<>();
+
+    @Column(name = "pic")
+    private String pic = "https://picsum.photos/seed/picsum/270/455";
 
     @Column(name = "x", nullable = false)
     private Double x;

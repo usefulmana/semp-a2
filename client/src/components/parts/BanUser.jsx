@@ -28,11 +28,10 @@ class BanUser extends Component {
   handleBan = (username) => {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You will not be able to undo this action!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it'
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
         this.props.banAUser(username)
@@ -42,6 +41,7 @@ class BanUser extends Component {
           showConfirmButton: false,
           timer: 1500
         })
+        setTimeout(window.location.reload.bind(window.location), 2000);
       }
     })
 
@@ -50,11 +50,10 @@ class BanUser extends Component {
   handleUnBan = (username) => {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You will not be able to undo this action!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it'
+      confirmButtonText: 'Yes!',
+      cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
         this.props.unbanAUser(username)
@@ -64,6 +63,7 @@ class BanUser extends Component {
           showConfirmButton: false,
           timer: 1500
         })
+        setTimeout(window.location.reload.bind(window.location), 2000);
       }
     })
   }

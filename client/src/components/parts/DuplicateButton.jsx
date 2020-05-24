@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { createLocation } from './../actions/locationActions';
 import Swal from 'sweetalert2';
+import { Fragment } from 'react';
 
 
 class DuplicateButton extends Component {
@@ -17,7 +18,7 @@ class DuplicateButton extends Component {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        loc.name = loc.name + "_Copy"
+        loc.name = "Copy of " + loc.name
         this.props.createLocation(loc);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
       }
@@ -26,11 +27,11 @@ class DuplicateButton extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         {this.props.auth.user.role === "ROLE_ADMIN" && window.location.href.includes("locations") ?
-          <button className="action-btn btn-flat btn-small center-align tooltipped" data-position="left" data-tooltip="Duplicate" onClick={() => this.handleDuplicate(this.props.item)}><i className="material-icons inline-icon blue-text">file_copy</i></button>
+          <a className="action-btn btn-flat btn-small center-align tooltipped blue-text" data-position="top" data-tooltip="Duplicate" onClick={() => this.handleDuplicate(this.props.item)}>Copy</a>
           : null}
-      </div>
+      </Fragment>
     )
   }
 }

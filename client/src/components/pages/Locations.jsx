@@ -32,11 +32,12 @@ class Locations extends Component {
         <td>{loc.y}</td>
         <td>{loc.minTime}</td>
         <td>
-          <button className="btn dropdown-trigger" data-target="dropdown1">Action(s)</button>
-          <ul id='dropdown1' className='dropdown-content'>
-            <li><DeleteButton id={loc.id} /></li>
-            <li><TourAdder item={loc} /></li>
-          </ul>
+
+
+            <DeleteButton id={loc.id} />
+            <DuplicateButton item={loc} />
+            <TourAdder item={loc} />
+
         </td>
 
       </tr>
@@ -45,32 +46,34 @@ class Locations extends Component {
 
   cardView(loc) {
     return (
-      <div class="col s12 m6 l6">
+      <div class="col s12 m4 l4">
 
-          <div className="card horizontal hoverable">
-            <div className="card-image">
-              <img src="https://picsum.photos/seed/picsum/100/210" />
-            </div>
-            <div className="card-stacked">
+          <div className="card">
+
+
             <Link to={{
               pathname: `/location/${loc.id}`,
             }}>
+            <div className="card-image">
+              <img src={loc.pic} width="240" height="240"/>
+              <span class="card-title">{loc.name}</span>
+            </div>
               <div className="card-content">
-                <div className="card-title">{loc.name}</div>
                 <p className="truncate">{loc.description}</p>
               </div>
             </Link>
               <div className="card-action">
-                  <div className="right-align">
-                  <button className="btn dropdown-trigger" data-target="dropdown1">Action(s)</button>
-                  <ul id='dropdown1' className='dropdown-content'>
-                    <li><DeleteButton id={loc.id} /></li>
-                    <li><DuplicateButton item={loc} /></li>
-                    <li><TourAdder item={loc} /></li>
-                  </ul>
+                <div className="center-align">
+                  <div className="row">
+                    <DeleteButton id={loc.id} />
+                    <DuplicateButton item={loc} />
+                    <TourAdder item={loc} />
                   </div>
+
+                </div>
+
               </div>
-            </div>
+
           </div>
       </div>
     )

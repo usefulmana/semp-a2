@@ -38,7 +38,6 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    // TODO Avatar Upload Functionality
     private String imageUrl = "https://materializecss.com/images/yuna.jpg";
 
     @Column(nullable = false)

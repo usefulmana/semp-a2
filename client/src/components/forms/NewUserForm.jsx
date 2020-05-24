@@ -28,7 +28,7 @@ class NewUserForm extends Component {
     this.setState({
       msg: ""
     })
-    document.getElementById("user-form").value ="";
+    document.getElementById("user-form").reset();
   }
 
   componentDidUpdate(prevProps) {

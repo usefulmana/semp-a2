@@ -3,7 +3,7 @@ import Navbar from './../../parts/Navbar';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min';
 import  Swal  from 'sweetalert2';
-import { deleteLocationById, getLocationById, updateLocation } from '../../actions/locationActions';
+import { deleteLocationById, getLocationById, updateLocation, uploadLocationPic } from '../../actions/locationActions';
 import { Redirect } from 'react-router-dom';
 import Footer from '../../parts/Footer';
 import TourAdder from '../../parts/TourAdder';
@@ -18,12 +18,13 @@ class LocationDetail extends Component {
       y: "",
       minTime: "",
       description: "",
-      file: "",
+      pic: "",
+      file: null,
       msg: ""
     })
     this.handleEdit = this.handleEdit.bind(this)
     this.onChange = this.onChange.bind(this)
-
+    this.handleImageChange = this.handleImageChange.bind(this)
   }
 
   componentDidMount() {
@@ -39,6 +40,7 @@ class LocationDetail extends Component {
           id: this.props.loc.location.id,
           name: this.props.loc.location.name,
           description: this.props.loc.location.description,
+          pic: this.props.loc.location.pic,
           x: this.props.loc.location.x,
           y: this.props.loc.location.y,
           minTime: this.props.loc.location.minTime
@@ -53,8 +55,30 @@ class LocationDetail extends Component {
 
     const body = {id, name , description, x , y, minTime}
 
-    this.props.updateLocation(body)
+    this.props.updateLocation(body);
+
+    if (this.state.file !== null){
+      const data = new FormData();
+      data.append('file', this.state.file);
+      this.props.uploadLocationPic(data, this.state.id)
+    }
   }
+
+  handleImageChange(e) {
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+          this.setState({
+            file: file,
+            pic: reader.result
+          });
+        }
+
+        reader.readAsDataURL(file)
+    }
 
   onChange(e) {
     this.setState({
@@ -90,9 +114,19 @@ class LocationDetail extends Component {
     return (
       <Fragment>
         <div className="slider">
-          <ul className="slides">
-            <li><img src="https://i.picsum.photos/id/104/1920/1080.jpg" className="materialboxed"/></li>
-          </ul>
+        <div className="row">
+            <div class="input-field col s2">
+            </div>
+            <div class="input-field col s8">
+              <ul className="slides">
+                <li><img src={this.state.pic} className="materialboxed"/></li>
+              </ul>
+            </div>
+
+            <div class="input-field col s2">
+            </div>
+        </div>
+
         </div>
         <div>
           <div>
@@ -138,7 +172,7 @@ class LocationDetail extends Component {
               <div class="file-field input-field col s6">
                 <div className="btn">
                   <span>File</span>
-                  <input disabled type="file" multiple />
+                  <input onChange={this.handleImageChange} type="file" />
                 </div>
                 <div className="file-path-wrapper">
                   <input type="text" className="file-path validate" placeholder="Upload New Picture(s)" />
@@ -198,5 +232,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteLocationById, getLocationById, updateLocation}
+  { deleteLocationById, getLocationById, updateLocation, uploadLocationPic}
 )(LocationDetail);

@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import M from 'materialize-css/dist/js/materialize.min';
 import { deleteTypeById } from '../actions/typeActions';
 import { deleteTourById } from './../actions/tourActions';
+import { Fragment } from 'react';
 
 class DeleteButton extends Component {
 
@@ -41,11 +42,11 @@ class DeleteButton extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         {this.props.auth.user.role === "ROLE_ADMIN" ?
-          <button className="action-btn btn-flat btn-small center-align tooltipped" data-position="left" data-tooltip="Delete" onClick={() => this.handleDelete(this.props.id)}><i className="material-icons inline-icon red-text">delete</i></button>
+          <button className="action-btn btn-flat btn-small center-align red-text tooltipped" data-position="top" data-tooltip="Delete" onClick={() => this.handleDelete(this.props.id)}>Delete</button>
           : null}
-      </div>
+      </Fragment>
     )
   }
 }
