@@ -21,7 +21,7 @@ class Locations extends Component {
   tableView = (loc) => {
     return (
       <tr>
-        <td>
+        <td className="truncate">
           <Link to={{
             pathname: `/location/${loc.id}`,
           }}>
@@ -56,7 +56,7 @@ class Locations extends Component {
             }}>
             <div className="card-image">
               <img src={loc.pic} width="240" height="240"/>
-              <span class="card-title">{loc.name}</span>
+              <span class="card-title truncate">{loc.name}</span>
             </div>
               <div className="card-content">
                 <p className="truncate">{loc.description}</p>

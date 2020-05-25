@@ -107,7 +107,7 @@ class Tours extends Component {
               pathname: `/tour/${loc.id}`,
             }}>
             <div className="card-image">
-              <img src="https://picsum.photos/seed/picsum/100/210" width="455" height="270" />
+              <img src={loc.locations ? "https://picsum.photos/seed/picsum/100/210" : loc.locations[0].pic} width="455" height="270" />
               <span class="card-title">{loc.name}</span>
             </div>
               <div class="card-content">

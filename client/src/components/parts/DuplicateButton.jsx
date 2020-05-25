@@ -20,6 +20,7 @@ class DuplicateButton extends Component {
       if (result.value) {
         loc.name = "Copy of " + loc.name
         this.props.createLocation(loc);
+        setTimeout(window.location.reload.bind(window.location), 1000);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
       }
     })

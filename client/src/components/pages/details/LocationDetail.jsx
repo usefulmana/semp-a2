@@ -119,7 +119,7 @@ class LocationDetail extends Component {
             </div>
             <div class="input-field col s8">
               <ul className="slides">
-                <li><img src={this.state.pic} className="materialboxed"/></li>
+                <li><img src={this.state.pic } className="materialboxed"/></li>
               </ul>
             </div>
 

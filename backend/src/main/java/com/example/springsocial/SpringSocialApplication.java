@@ -32,7 +32,7 @@ public class SpringSocialApplication {
 				User admin = new User();
 				admin.setName("Le Admin");
 				admin.setPassword(encoder.encode("GAtech321!"));
-				admin.setEmail("admin@gmail.com");
+				admin.setEmail("nlbasni2010@gmail.com");
 				admin.setUserName("a000001");
 				admin.setEmailVerified(true);
 				admin.setRole(Role.ROLE_ADMIN);
