@@ -175,8 +175,7 @@ public class UserController {
         Map<String, Object> model = new HashMap<>();
         model.put("verification_url", String.format("http://localhost:3000/recover/%s", token.getToken()));
         mail.setModel(model);
-        // TODO Remove This The Comment Bracket in Prod
-        // emailSenderService.sendSimpleMessage(mail, "token-email");
+         emailSenderService.sendSimpleMessage(mail, "token-email");
     }
 
     private String validateToken(String token){

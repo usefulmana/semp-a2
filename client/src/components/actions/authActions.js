@@ -185,11 +185,19 @@ export const changePassword = ({ oldpassword, newpassword }) => (dispatch) => {
   const body = JSON.stringify({ oldpassword, newpassword });
   axios
     .post(PASSWORD_CHANGE_API, body, getRequestConfig())
-    .then(res =>
+    .then(res =>{
       dispatch({
         type: PASSWORD_CHANGED,
         payload: res.data
       })
+      Swal.fire({
+        icon: 'success',
+        title: 'Password Changed',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+
     )
     .catch(err => {
       dispatch(

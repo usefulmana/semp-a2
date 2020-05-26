@@ -21,6 +21,7 @@ class Tours extends Component {
     })
     this.onChange = this.onChange.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
+    this.handleFilter = this.handleFilter.bind(this)
   }
 
 
@@ -44,9 +45,17 @@ class Tours extends Component {
 
   handleSearch(e){
     e.preventDefault()
-    if (this.state.query === "") this.props.getTours()
+    if (this.state.query === ""){
+      this.props.getTours()
+      this.setState({
+        tours: this.props.tour.tours
+      })
+    }
     else{
       this.props.getToursByName(this.state.query)
+      this.setState({
+        tours: this.props.tour.tours
+      })
     }
   }
 
@@ -60,7 +69,9 @@ class Tours extends Component {
             {loc.name}
           </Link>
         </td>
-        <td className="truncate">{loc.description}</td>
+        <td className="truncate">{loc.types.length === 0 ? "None" : loc.types.map(type => (
+          <Fragment>{type.name},</Fragment>
+        ))}</td>
         <td>{loc.minTime}</td>
         <td>
           <DeleteButton id={loc.id} />
@@ -75,7 +86,7 @@ class Tours extends Component {
         return (<h4 className="center-align">No items available</h4>)
       }
       else {
-        return this.props.tour.tours.map(loc => this.cardView(loc))
+        return this.state.tours.map(loc => this.cardView(loc))
       }
     }
     else {
@@ -84,13 +95,13 @@ class Tours extends Component {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Description</th>
+              <th>Types</th>
               <th>Time(s)</th>
               <th>Action(s)</th>
             </tr>
           </thead>
           <tbody>
-            {this.props.tour.tours.map(loc => this.gridView(loc))}
+            {this.state.tours.map(loc => this.gridView(loc))}
           </tbody>
         </table>
       )
@@ -147,7 +158,7 @@ class Tours extends Component {
     if (this.state.filter){
       return (
         <Fragment>
-          <form onSubmit={this.handleFilter.bind(this)}>
+          <form onSubmit={this.handleFilter}>
             <div className="row">
               <div className="col s3 input-field">
 
@@ -169,12 +180,12 @@ class Tours extends Component {
               </div>
 
               <div class="input-field col s2">
-                <input id="maxTime" name="maxTime" type="number" className="validate" min="0" max="10000" required value={this.state.maxTime} onChange={this.onChange}/>
+                <input id="maxTime" name="maxTime" type="number" className="validate" min="0" max="100000" required value={this.state.maxTime} onChange={this.onChange}/>
                 <label for="maxTime" className="active">Max Time(s)</label>
               </div>
             </div>
             <div className="center-align">
-              <button type="submit" className="btn">Apply</button>
+              <button type="submit" className="btn"><i className="material-icons right">filter_list</i>Filter</button>
             </div>
           </form>
         </Fragment>
@@ -224,10 +235,8 @@ class Tours extends Component {
           <div className="divider"></div>
           <br />
           {this.search()}
-          {/* <div className="center-align">
-            <button disabled className="btn" onClick={this.onClick.bind(this)}><i className="material-icons right">filter_list</i>Filter</button>
-          </div>
-          {this.filter()} */}
+
+          {this.filter()}
           <br/>
           <div className="row">
             {this.renderLogic()}
